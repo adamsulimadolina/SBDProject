@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -13,24 +10,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace SBDProject.Models
 {
-    [Table("Opinie")]
-    public class OpinionModel
+    [Table("Ogłoszenie")]
+    public class AdvertisementModel
     {
         [Key]
-        public int OpinionID { get; set; }
-        [MaxLength(250)]
-        public string Opinion { get; set; }
+        public int AdvertisementID { get; set; }
+        [StringLength(40)]
+        public string AdvertisementType { get; set; }
 
         [ForeignKey("OwnerID")]
         public int OwnerID { get; set; }
+        [ForeignKey("FlatID")]
+        public int FlatID { get; set; }
 
-        [ForeignKey("UserID")]
-        public int UserID { get; set; }
-       
         public virtual OwnerModel Owner { get; set; }
-        
-        public virtual UserModel User { get; set; }
+        public virtual FlatModel Flat { get; set; }
+
+
     }
 }

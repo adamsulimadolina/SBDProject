@@ -15,13 +15,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SBDProject.Models
 {
+    [Table("Parowanie")]
     public class PairsModel
     {
-        [Required]
+        [Key]
         public int PairID { get; set; }
-
+        [Required]
         public double PairCompatibility { get; set; }
 
+        [ForeignKey("TenantID_1")]
+        public int TenantID_1 { get; set; }
+        [ForeignKey("TenantID_2")]
+        public int TenantID_2 { get; set; }
+        public virtual TenantModel Tenant_1{ get; set; }
+        public virtual TenantModel Tenant_2{ get; set; }
 
-    }
+
+}
 }

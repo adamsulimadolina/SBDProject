@@ -15,26 +15,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SBDProject.Models
 {
+    [Table("Najemca")]
     public class TenantModel
     {
-        [Required]
+        [Key]
         public int TenantID { get; set; }
-
+        [MaxLength(20)]
         public string Name { get; set; }
-
+        [MaxLength(30)]
         public string Surname { get; set; }
-
+        
         public int Age { get; set; }
-
+        [Required]
         public bool IsSmoking { get; set; }
-
+        
         public bool IsVege { get; set; }
 
         public string Status { get; set; }
-
-        public int UserID { get; set; }
-
         [ForeignKey("UserID")]
+        public int UserID { get; set; }
+      
         public virtual UserModel User { get; set; }
     }
 }

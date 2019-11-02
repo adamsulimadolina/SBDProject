@@ -14,12 +14,15 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SBDProject.Models
-{
+{   
+    [Table("User")]
     public class UserModel
-    {
-        [Required]
+    {       
+        [Key]
         public int UserID { get; set; }
+        [MaxLength(20),MinLength(4)]
         public string Login { get; set; }
+        [MinLength(5),MaxLength(25)]
         public string Password { get; set; }
         public bool Verified { get; set; }
     }

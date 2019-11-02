@@ -15,18 +15,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SBDProject.Models
 {
+    [Table("Wlasciciel")]
     public class OwnerModel
     {
-        [Required]
+        [Key]
         public int OwnerID { get; set; }
-
+        [MaxLength(20)]
         public string Name { get; set; }
-
+        [MaxLength(30)]
         public string Surname { get; set; }
 
+        [ForeignKey("UserID")]
         public int UserID { get; set; }
 
-        [ForeignKey("UserID")]
+       
         public virtual UserModel User {get; set;}
     }
 }

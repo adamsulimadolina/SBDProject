@@ -15,9 +15,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SBDProject.Models
 {
+    [Table("Logi")]
     public class LogsModel
     {
-        [Required]
+        
+        [Key]
         public int LogID { get; set; }
 
         [DataType(DataType.Date)]
@@ -27,9 +29,9 @@ namespace SBDProject.Models
         [MaxLength(50)]
         public string Log { get; set; }
 
-        public int UserID { get; set; }
-
         [ForeignKey("UserID")]
+        public int UserID { get; set; }   
+        
         public virtual UserModel UserR { get; set; }
 
     }
