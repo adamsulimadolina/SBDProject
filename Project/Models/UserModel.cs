@@ -26,6 +26,7 @@ namespace Project.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Please confirm your password.")]
-        public bool Verified { get; set; }
+        [DataType(DataType.Password)]
+        public string VerifyPassword { get; set; }
     }
 }

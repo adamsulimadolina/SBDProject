@@ -28,3 +28,6 @@ E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Project.View
 E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Project.dll
 E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Project.pdb
 E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Project.csproj.CopyComplete
+E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
+E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
+E:\Adas\STUDIA\SEMESTR5\SBD\Project\Project\obj\Debug\netcoreapp2.2\Razor\Views\Account\LoggedIn.g.cshtml.cs

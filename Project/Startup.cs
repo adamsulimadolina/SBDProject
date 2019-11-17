@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Project
 {
@@ -35,12 +36,14 @@ namespace Project
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-           
+
             services.AddDbContext<ProjectContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +64,9 @@ namespace Project
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
