@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "LoggedIn";
+}
+
+@if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
+{
+    <h4>Hello @HttpContextAccessor.HttpContext.Session.GetString("Username")!</h4>
+}
+
