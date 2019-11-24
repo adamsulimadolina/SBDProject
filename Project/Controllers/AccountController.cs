@@ -49,8 +49,10 @@ namespace Project.Controllers
                 }
                 ModelState.Clear();
                 ViewBag.Message = "Registration successfull" + user.Login;
+                return RedirectToAction("Index", "Home");
             }
             return View();
+            
         }
 
         //Login
@@ -74,7 +76,17 @@ namespace Project.Controllers
                 {
                     ModelState.AddModelError("", "Username or Password is wrong.");
                 }
+                return RedirectToAction("Index", "Home");
             }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            
+            this.HttpContext.Session.SetString("UserID",null);
+            this.HttpContext.Session.SetString("Username",null);
+
             return View();
         }
 

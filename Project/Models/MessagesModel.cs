@@ -37,5 +37,6 @@ namespace Project.Models
         public virtual UserModel UserS { get; set; }
         
         public virtual UserModel UserR { get; set; }
+       
     }
 }
