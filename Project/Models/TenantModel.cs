@@ -24,17 +24,20 @@ namespace Project.Models
         public string Name { get; set; }
         [MaxLength(30)]
         public string Surname { get; set; }
-        
+
+
+        [Range(18, 90)]
         public int Age { get; set; }
         [Required]
         public bool IsSmoking { get; set; }
-        
+
         public bool IsVege { get; set; }
 
         public string Status { get; set; }
+        public string Gender { get; set; }
         [ForeignKey("UserID")]
         public int UserID { get; set; }
-      
+
         public virtual UserModel User { get; set; }
     }
 }
