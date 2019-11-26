@@ -31,13 +31,13 @@ namespace SBDProject.Controllers
         {
             // var applicationDbContext = _context.TenantModel.Include(t => t.User);
             var id = this.HttpContext.Session.GetString("UserID");
-           
-            if (id!=null)
+
+            if (id != null)
             {
                 ViewBag.AbletoModify = int.Parse(id);
-                var tmp = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m=>m.UserID).ToList();
-                
-                if (tmp.Count!=0)
+                var tmp = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
+
+                if (tmp.Count != 0)
                 {
                     return View(await _context.Tenants.ToListAsync());
                 }
@@ -48,11 +48,11 @@ namespace SBDProject.Controllers
             }
             else
             {
-                
+
                 return RedirectToAction("Login", "Account");
             }
-          
-            
+
+
         }
 
         // GET: TenantModels/Details/5
@@ -101,7 +101,7 @@ namespace SBDProject.Controllers
                 _context.Add(tenantModel);
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
-                
+
                 return RedirectToAction(nameof(Index));
             }
             TempData["ModelState"] = "You must fill in all of the fields";
@@ -196,18 +196,18 @@ namespace SBDProject.Controllers
 
         public async Task<IActionResult> Show()
         {
-            
-            
-                return RedirectToAction("Index", "PairsModels");
-            
-            
+
+
+            return RedirectToAction("Index", "PairsModels");
+
+
 
         }
 
         private bool TenantModelExists(int id)
         {
-           
-                return _context.Tenants.Any(e => e.TenantID == id);
+
+            return _context.Tenants.Any(e => e.TenantID == id);
         }
     }
 }
