@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+    <ul class="navbar-nav">
+        @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
+        {
+            <li class="nav-item">
+                <p id="manage" class="nav-link text-dark" title="Manage">Witaj @HttpContextAccessor.HttpContext.Session.GetString("Username")!</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="register" asp-area="" asp-controller="Account" asp-action="Register">Rejestracja</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="" asp-controller="Account" asp-action="Login">Logowanie</a>
+            </li>
+        }
+    </ul>
