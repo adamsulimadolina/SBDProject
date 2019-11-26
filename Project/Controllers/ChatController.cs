@@ -55,7 +55,7 @@ namespace Project.Controllers
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
 
-                ViewBag.allUsers = db.Users.Where(u => u.UserID != currentUser.UserID)
+                ViewBag.allUsers = db.User.Where(u => u.UserID != currentUser.UserID)
                                  .ToList();
             }
 
