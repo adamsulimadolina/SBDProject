@@ -3,27 +3,24 @@
 <head>
     <title>pChat &mdash; Private Chatroom</title>
     <link rel="stylesheet" href="@Url.Content("~/css/StyleSheet.css")">
-
+    <link rel="stylesheet" href="@Url.Content("~/css/app.css")">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">pChat - @ViewBag.currentUser.Login </a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation Bar -->  
+        <div class="containerr-child ">
+            <nav class="navv">
+                <div class="navbar-header">
+                    <p class="" style="font-size:large">Wiadomości - @ViewBag.currentUser.Login </p>
+                </div>
+            </nav>
+        </div> 
     <!-- / Navigation Bar -->
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-md-3">
-                <aside class="main visible-md visible-lg">
+            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px;">
+                <div class="main visible-md visible-lg">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 col-sm-12">
                             <div class="panel panel-default users__bar">
                                 <div class="panel-heading users__heading">
                                     Contacts (@ViewBag.allUsers.Count)
@@ -51,20 +48,22 @@
                             </div>
                         </div>
                     </div>
-                </aside>
+                </div>
 
 
             </div>
-            <div class="col-xs-12 col-md-9 chat__body">
-                <div class="row">
-                    <div class="col-xs-12" style="overflow:scroll">
-                        <ul class="list-group chat__main">
-                        </ul>
-                    </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 chat__body">
+                <div class="row" style="height:65vh;">
+                    
+                        <div class="col-xs-12" style="overflow:auto;max-height:58vh;">
+                            <ul class="list-group chat__main">
+                            </ul>
+                        </div>
+                   
                     <div class="chat__type__body">
                         <div class="chat__type">
                             <textarea id="msg_box" placeholder="Type your message"></textarea>
-                            <button class="btn btn-primary" id="sendMessage">Send</button>
+                            <button class="btn btn-dark "  id="sendMessage">Send</button>
                         </div>
                     </div>
                     <div class="chat__typing">
@@ -174,10 +173,10 @@
                 loadChat( chat_data );
                 });
         }
-       
-       
+            
         //load chat data into view
-        function loadChat( chat_data ) {
+        function loadChat(chat_data) {
+            $('.chat__main').empty();
             chat_data.forEach(function (data) {
                 
                 displayMessage(data);
