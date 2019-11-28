@@ -72,6 +72,31 @@ namespace Project
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                 name: "GetContactConversations",
+                 template: "contact/conversations/{contact}",
+                 defaults: new { controller = "Chat", action = "ConversationWithContact", contact = "" });
+
+                routes.MapRoute(
+                       name: "SendMessage",
+                       template: "send_message",
+                       defaults: new { controller = "Chat", action = "SendMessage" });
+
+                routes.MapRoute(
+                 name: "MessageDelivered",
+                 template: "message_delivered /{message_id}",
+                defaults: new { controller = "Chat", action = "MessageDelivered", message_id = "" });
+
+
+                routes.MapRoute(
+                 name: "PusherAuth",
+                 template: "pusher/auth",
+                 defaults: new { controller = "Auth", action = "AuthForChannel" });
+
+                routes.MapRoute(
+                name: "ChatRoom",
+                template: "chat",
+                defaults: new { controller = "Chat", action = "Index" });
             });
         }
     }
