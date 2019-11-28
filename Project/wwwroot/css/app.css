@@ -147,15 +147,19 @@ header {
 .text-color {
     color: #393F4C
 }
-.panel{
-    background-color:gray;
-    height:70vh;
+.panel {
+    background-color: #33BEFF;
+    height: 70vh;
+    color: #FFFFFF;
 }
 .panel-child{
     height:40vh;
 }
 .buttons{
-    border-radius:12px;
+    border-radius:14px;
+    background-color:red;
+    color:white;
+    border-color:red;
 }
 #top-btn {
     display: none; 

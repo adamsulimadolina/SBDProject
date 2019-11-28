@@ -14,7 +14,11 @@
                     Również ten portal jest stworzony osobom, które posiadają mieszkania lub pokoje do wynajęcia i chcą w łatwy i szybki sposób znaleźć najemcę.
                     Portal umożliwia łatwą komunikację pomiędzy użytkownikami
                 </p>
-                <button class="btn btn-light px-4 py-2 buttons" >Zaloguj Się</button>
+                <div class="row justify-content-around py-3">
+                    <a class="btn btn-light px-4 py-2 buttons" id="login" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj Się</a>
+
+                    <a class="btn btn-light px-4 py-2 buttons" id="register" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj się</a>
+                </div>  
             </div>
         </div>
 
