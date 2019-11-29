@@ -27,11 +27,14 @@ namespace SBDProject.Controllers
         }
 
         // GET: TenantModels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string message)
         {
             // var applicationDbContext = _context.TenantModel.Include(t => t.User);
             var id = this.HttpContext.Session.GetString("UserID");
-
+            if (message != null)
+            {
+                ViewBag.Message = message;
+            }
             if (id != null)
             {
                 ViewBag.AbletoModify = int.Parse(id);
@@ -76,6 +79,18 @@ namespace SBDProject.Controllers
         // GET: TenantModels/Create
         public IActionResult Create()
         {
+            var query1 = from tenant in _context.Tenants                         
+                         select tenant;
+            var tenants = query1.ToList();
+            foreach(var tenant in tenants)
+            {
+                if(tenant.UserID== int.Parse(this.HttpContext.Session.GetString("UserID")))
+                {
+                    // ViewBag.Message = "Zostałeś już najemcą na naszym portalu";
+                    string message = "Zostałeś już najemcą na naszym portalu";
+                    return RedirectToAction("Index","TenantModels",message);
+                }
+            }
             if (TempData["ModelState"] != null)
             {
                 ModelState.AddModelError(string.Empty, (string)TempData["ModelState"]);
@@ -93,6 +108,7 @@ namespace SBDProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TenantID,Name,Surname,Age,IsSmoking,IsVege,Status,Gender,UserID")] TenantModel tenantModel)
         {
+            
             if (ModelState.IsValid)
             {
 
@@ -101,7 +117,6 @@ namespace SBDProject.Controllers
                 _context.Add(tenantModel);
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
-
                 return RedirectToAction(nameof(Index));
             }
             TempData["ModelState"] = "You must fill in all of the fields";
