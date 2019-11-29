@@ -1,4 +1,4 @@
-﻿@model Tuple<Project.Models.AdvertisementModel, Project.Models.FlatModel>
+﻿@model Tuple<Project.Models.AdvertisementModel, Project.Models.FlatModel, Project.Models.RoomModel>
 @{
     ViewData["Title"] = "Create";
 }
@@ -16,14 +16,6 @@
                 <label asp-for="Item1.AdvertisementType" class="control-label"></label>
                 <input asp-for="Item1.AdvertisementType" class="form-control" />
                 <span asp-validation-for="Item1.AdvertisementType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item1.OwnerID" class="control-label"></label>
-                <select asp-for="Item1.OwnerID" class="form-control" asp-items="ViewBag.OwnerID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Item1.FlatID" class="control-label"></label>
-                <select asp-for="Item1.FlatID" class="form-control" asp-items="ViewBag.FlatID"></select>
             </div>
             <h2>FlatModel</h2>
             <div class="form-group">
@@ -46,10 +38,40 @@
                 <input asp-for="Item2.KitchenType" class="form-control" />
                 <span asp-validation-for="Item2.KitchenType" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label class="control-label">City</label>
                 <select class="form-control" asp-items="ViewBag.CityName" name="city"></select>
+            </div>
+            <h2>RoomModel</h2>
+            <div class="form-group">
+                <label asp-for="Item3.Surface" class="control-label"></label>
+                <input asp-for="Item3.Surface" class="form-control" />
+                <span asp-validation-for="Item3.Surface" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Item3.Balcony" /> @Html.DisplayNameFor(model => model.Item3.Balcony)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Item3.Bed" /> @Html.DisplayNameFor(model => model.Item3.Bed)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Item3.Wardrobe" /> @Html.DisplayNameFor(model => model.Item3.Wardrobe)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item3.AdditionalInfo" class="control-label"></label>
+                <input asp-for="Item3.AdditionalInfo" class="form-control" />
+                <span asp-validation-for="Item3.AdditionalInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item3.Rent" class="control-label"></label>
+                <input asp-for="Item3.Rent" class="form-control" />
+                <span asp-validation-for="Item3.Rent" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
