@@ -6,14 +6,15 @@
     <link rel="stylesheet" href="@Url.Content("~/css/app.css")">
 </head>
 <body>
-    <!-- Navigation Bar -->  
-        <div class="containerr-child my-4 border-bottom">
-            <nav class="navv">
-                <div class="navbar-header">
-                    <p class="" style="font-size:large">Wiadomości - @ViewBag.currentUser.Login </p>
-                </div>
-            </nav>
-        </div> 
+
+    <!-- Navigation Bar -->
+    <div class="containerr-child my-4 border-bottom">
+        <nav class="navv">
+            <div class="navbar-header">
+                <p class="" style="font-size:large">Wiadomości - @ViewBag.currentUser.Login </p>
+            </div>
+        </nav>
+    </div>
     <!-- / Navigation Bar -->
     <div class="container">
         <div class="row">
@@ -54,16 +55,16 @@
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9 chat__body">
                 <div class="row" style="height:65vh;">
-                    
-                        <div class="col-xs-12" style="overflow:auto;max-height:58vh;">
-                            <ul class="list-group chat__main">
-                            </ul>
-                        </div>
-                   
+
+                    <div class="col-xs-12" style="overflow:auto;max-height:58vh;">
+                        <ul class="list-group chat__main">
+                        </ul>
+                    </div>
+
                     <div class="chat__type__body">
                         <div class="chat__type">
                             <textarea id="msg_box" placeholder="Type your message"></textarea>
-                            <button class="btn btn-dark "  id="sendMessage">Send</button>
+                            <button class="btn btn-dark " id="sendMessage">Send</button>
                         </div>
                     </div>
                     <div class="chat__typing">
@@ -73,9 +74,6 @@
             </div>
         </div>
     </div>
-
-
-
     <script src="@Url.Content("~/js/app.js")" type="text/javascript"></script>
     <script src="https://js.pusher.com/4.0/pusher.min.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -106,6 +104,7 @@
             socketId = pusher.connection.socket_id;
         });
         let currentContact = null; // Holds contact currently being chatted with
+        let selectedContact = null;
         let socketId = null;
         let currentconversationChannel = null;//pusher.subscribe('chat-' + @ViewBag.currentUser.UserID );
         let conversationChannelName = null;
@@ -141,7 +140,7 @@
             }
         }
         function displayMessage(message_obj) {
-            console.log(message_obj);
+
             const msg_id = message_obj.MessageID||message_obj.messageID;
             const msg_body = message_obj.Message||message_obj.message;
             let template = $(newMessageTpl).html();
@@ -149,7 +148,7 @@
             template = template.replace("{{body}}", msg_body);
             template = $(template);
             if ( message_obj.UserSenderID == @ViewBag.currentUser.UserID||message_obj.userSenderID == @ViewBag.currentUser.UserID ) {
-                template.find('.__chat__').addClass('receive__chat');                
+                template.find('.__chat__').addClass('receive__chat');
             } else {
                 template.find('.__chat__').addClass('from__chat');
             }
@@ -162,7 +161,7 @@
         function getChat( contact_id ) {
             $.get("/contact/conversations/" + contact_id )
                 .done(function (resp) {
-                    
+
                     let chat_data = new Array(resp.data.length);
                     chat_data.fill(0);
                     for (let i = 0; i < resp.data.length; i++) {
@@ -173,12 +172,12 @@
                 loadChat( chat_data );
                 });
         }
-            
+
         //load chat data into view
         function loadChat(chat_data) {
             $('.chat__main').empty();
             chat_data.forEach(function (data) {
-                
+
                 displayMessage(data);
             });
 
@@ -188,11 +187,12 @@
         // select contact to chat with
         $('.user__item').click( function(e) {
             e.preventDefault();
+
             currentContact = {
                 id: $(this).data('contact-id'),
                 name: $(this).data('contact-name'),
             };
-           
+            console.log(currentContact);
             if ( conversationChannelName ) {
                 pusher.unsubscribe( conversationChannelName );
             }
@@ -227,9 +227,6 @@
             }).done(function (data) {
                 let obj = {};
                 obj = data;
-                console.log(obj);
-                console.log(data);
-                console.log($('#msg_box'));
                 displayMessage(data);
                 $('#msg_box').val('');
             });
@@ -258,7 +255,33 @@
                 $('#msg-' + msg.id).find('.delivery-status').show();
             });
         }
+
+        if (@ViewBag.selectedUser.UserID!= 0) {
+            function onload() {
+
+
+                currentContact = {
+                    id: @ViewBag.selectedUser.UserID,
+                    name: "@ViewBag.selectedUser.Login",
+                };
+
+                if (conversationChannelName) {
+                    pusher.unsubscribe(conversationChannelName);
+                }
+                conversationChannelName = getConvoChannel((@ViewBag.currentUser.UserID * 1), (currentContact.id * 1));
+                currentconversationChannel = pusher.subscribe(conversationChannelName);
+                bind_client_events();
+
+                $('#contacts').find('li').removeClass('active');
+                $('#contacts .contact-' + currentContact.id).find('li').addClass('active');
+                getChat(currentContact.id);
+
+            };
+        }
     </script>
+
+
+
 </body>
 </html>
 
