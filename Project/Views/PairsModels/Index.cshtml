@@ -36,8 +36,11 @@
 
                     <td>
 
-                        <a asp-action="Details" asp-route-id="@item.PairID">Details</a>
+                        <a asp-action="Details" asp-route-id="@item.PairID">Szczegóły</a>
 
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
                     </td>
                 </tr>
             //}

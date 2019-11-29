@@ -29,5 +29,14 @@ namespace Project.Models
         [DataType(DataType.Password)]
         public string VerifyPassword { get; set; }
 
+        public int getUserID()
+        {
+            return UserID;
+        }
+        public string getLogin()
+        {
+            return Login;
+        }
+
     }
 }

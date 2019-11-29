@@ -21,6 +21,7 @@ namespace Project.Controllers
         private string _connectionString;
         DbContextOptionsBuilder<ProjectContext> _optionsBuilder;
         private Pusher pusher;
+        private UserModel SelectedUser;
 
         public ChatController(IConfiguration configuration)
         {
@@ -30,7 +31,7 @@ namespace Project.Controllers
             _optionsBuilder.UseSqlServer(_connectionString);
             var options = new PusherOptions();
             options.Cluster = "eu";
-
+            
             pusher = new Pusher(
            "904061",
            "85b88ce58ddae993b77e",
@@ -40,9 +41,9 @@ namespace Project.Controllers
         
 
       
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-           
+            
             if (this.HttpContext.Session.Get("UserID") == null)
             {
                 return RedirectToAction("Login","Account");
@@ -50,8 +51,31 @@ namespace Project.Controllers
 
             UserModel currentUser = new UserModel { UserID= Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
             Login = this.HttpContext.Session.GetString("Username")
-        }; 
-                       
+        };
+            if (id != null)
+            {
+                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                {
+                    var query1 = from tenant in db.Tenants
+                               where tenant.TenantID == id
+                               select tenant;
+                    var najemca = query1.FirstOrDefault();
+                    var query2 = from user in db.User
+                                 where user.UserID == najemca.UserID
+                                 select user;
+
+                    ViewBag.selectedUser = query2.FirstOrDefault();
+                }
+            }
+            else
+            {
+                ViewBag.selectedUser = new UserModel
+                {
+                    UserID = 0,
+                    Login = "0",
+                };
+            }
+
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
 
@@ -71,8 +95,8 @@ namespace Project.Controllers
             {
                 return Json(new { status = "error", message = "User is not logged in" });
             }
-
-            UserModel currentUser = new UserModel
+           
+                UserModel currentUser = new UserModel
             {
                 UserID = Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
                 Login = this.HttpContext.Session.GetString("Username")
@@ -112,13 +136,15 @@ namespace Project.Controllers
             };
 
             string socket_id = Request.Form["socket_id"];
-
-            MessagesModel convo = new MessagesModel
-            {             
-                UserSenderID = currentUser.UserID,
-                Message = Request.Form["Message"],
-                UserReceiverID = Convert.ToInt32(Request.Form["contact"])
-            };
+                    
+                MessagesModel convo = new MessagesModel
+                {
+                    UserSenderID = currentUser.UserID,
+                    Message = Request.Form["Message"],
+                    UserReceiverID = Convert.ToInt32(Request.Form["contact"])
+                };
+           
+       
             convo.MessageDate = DateTime.Now;
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
