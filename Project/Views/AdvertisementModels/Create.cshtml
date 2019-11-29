@@ -1,5 +1,4 @@
-﻿@model Project.Models.AdvertisementModel
-
+﻿@model Tuple<Project.Models.AdvertisementModel, Project.Models.FlatModel>
 @{
     ViewData["Title"] = "Create";
 }
@@ -12,25 +11,56 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h2>AdvertisementModel</h2>
             <div class="form-group">
-                <label asp-for="AdvertisementType" class="control-label"></label>
-                <input asp-for="AdvertisementType" class="form-control" />
-                <span asp-validation-for="AdvertisementType" class="text-danger"></span>
+                <label asp-for="Item1.AdvertisementType" class="control-label"></label>
+                <input asp-for="Item1.AdvertisementType" class="form-control" />
+                <span asp-validation-for="Item1.AdvertisementType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OwnerID" class="control-label"></label>
-                <select asp-for="OwnerID" class ="form-control" asp-items="ViewBag.OwnerID"></select>
+                <label asp-for="Item1.OwnerID" class="control-label"></label>
+                <select asp-for="Item1.OwnerID" class="form-control" asp-items="ViewBag.OwnerID"></select>
             </div>
             <div class="form-group">
-                <label asp-for="FlatID" class="control-label"></label>
-                <select asp-for="FlatID" class ="form-control" asp-items="ViewBag.FlatID"></select>
+                <label asp-for="Item1.FlatID" class="control-label"></label>
+                <select asp-for="Item1.FlatID" class="form-control" asp-items="ViewBag.FlatID"></select>
+            </div>
+            <h2>FlatModel</h2>
+            <div class="form-group">
+                <label asp-for="Item2.RoomsCount" class="control-label"></label>
+                <input asp-for="Item2.RoomsCount" class="form-control" />
+                <span asp-validation-for="Item2.RoomsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item2.BathroomCount" class="control-label"></label>
+                <input asp-for="Item2.BathroomCount" class="form-control" />
+                <span asp-validation-for="Item2.BathroomCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item2.Surface" class="control-label"></label>
+                <input asp-for="Item2.Surface" class="form-control" />
+                <span asp-validation-for="Item2.Surface" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item2.KitchenType" class="control-label"></label>
+                <input asp-for="Item2.KitchenType" class="form-control" />
+                <span asp-validation-for="Item2.KitchenType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">City</label>
+                <select class="form-control" asp-items="ViewBag.CityName" name="city"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
+                
+            </div>
+        </div>
+
+
+
 
 <div>
     <a asp-action="Index">Back to List</a>

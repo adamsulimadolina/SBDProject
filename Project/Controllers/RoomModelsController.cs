@@ -10,23 +10,23 @@ using Project.Models;
 
 namespace Project.Controllers
 {
-    public class FlatModelsController : Controller
+    public class RoomModelsController : Controller
     {
         private readonly ProjectContext _context;
 
-        public FlatModelsController(ProjectContext context)
+        public RoomModelsController(ProjectContext context)
         {
             _context = context;
         }
 
-        // GET: FlatModels
+        // GET: RoomModels
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.Flats.Include(f => f.City);
+            var projectContext = _context.Rooms.Include(r => r.Flat);
             return View(await projectContext.ToListAsync());
         }
 
-        // GET: FlatModels/Details/5
+        // GET: RoomModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,53 +34,42 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            var flatModel = await _context.Flats
-                .Include(f => f.City)
-                .FirstOrDefaultAsync(m => m.FlatID == id);
-            if (flatModel == null)
+            var roomModel = await _context.Rooms
+                .Include(r => r.Flat)
+                .FirstOrDefaultAsync(m => m.RoomID == id);
+            if (roomModel == null)
             {
                 return NotFound();
             }
 
-            return View(flatModel);
+            return View(roomModel);
         }
 
-        // GET: FlatModels/Create
+        // GET: RoomModels/Create
         public IActionResult Create()
         {
-            ViewData["CityID"] = new SelectList(_context.Citys, "CityName", "CityName");
-            ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
-            ViewData["CityID"] = new SelectList(_context.Citys, "CityName", "CityName", "CityID", "CityID");
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID");
             return View();
         }
 
-        // POST: FlatModels/Create
+        // POST: RoomModels/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FlatID,RoomsCount,BathroomCount,Surface,KitchenType")] FlatModel flatModel, string city)
+        public async Task<IActionResult> Create([Bind("RoomID,Surface,Balcony,Bed,Wardrobe,AdditionalInfo,Rent,FlatID")] RoomModel roomModel)
         {
-            var cityModel = await _context.Citys.ToListAsync();
-            foreach(var elem in cityModel)
-            {
-                if(elem.CityName == city)
-                {
-                    flatModel.CityID = elem.CityID;
-                    break;
-                }
-            }
             if (ModelState.IsValid)
             {
-                _context.Add(flatModel);
+                _context.Add(roomModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction();
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["CityID"] = new SelectList(_context.Citys, "CityID", "CityID", flatModel.City);
-            return View(flatModel);
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", roomModel.FlatID);
+            return View(roomModel);
         }
 
-        // GET: FlatModels/Edit/5
+        // GET: RoomModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,23 +77,23 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            var flatModel = await _context.Flats.FindAsync(id);
-            if (flatModel == null)
+            var roomModel = await _context.Rooms.FindAsync(id);
+            if (roomModel == null)
             {
                 return NotFound();
             }
-            ViewData["CityID"] = new SelectList(_context.Citys, "CityID", "CityID", flatModel.CityID);
-            return View(flatModel);
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", roomModel.FlatID);
+            return View(roomModel);
         }
 
-        // POST: FlatModels/Edit/5
+        // POST: RoomModels/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FlatID,RoomsCount,BathroomCount,Surface,KitchenType,CityID")] FlatModel flatModel)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomID,Surface,Balcony,Bed,Wardrobe,AdditionalInfo,Rent,FlatID")] RoomModel roomModel)
         {
-            if (id != flatModel.FlatID)
+            if (id != roomModel.RoomID)
             {
                 return NotFound();
             }
@@ -113,12 +102,12 @@ namespace Project.Controllers
             {
                 try
                 {
-                    _context.Update(flatModel);
+                    _context.Update(roomModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FlatModelExists(flatModel.FlatID))
+                    if (!RoomModelExists(roomModel.RoomID))
                     {
                         return NotFound();
                     }
@@ -129,11 +118,11 @@ namespace Project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityID"] = new SelectList(_context.Citys, "CityID", "CityID", flatModel.CityID);
-            return View(flatModel);
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", roomModel.FlatID);
+            return View(roomModel);
         }
 
-        // GET: FlatModels/Delete/5
+        // GET: RoomModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,31 +130,31 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            var flatModel = await _context.Flats
-                .Include(f => f.City)
-                .FirstOrDefaultAsync(m => m.FlatID == id);
-            if (flatModel == null)
+            var roomModel = await _context.Rooms
+                .Include(r => r.Flat)
+                .FirstOrDefaultAsync(m => m.RoomID == id);
+            if (roomModel == null)
             {
                 return NotFound();
             }
 
-            return View(flatModel);
+            return View(roomModel);
         }
 
-        // POST: FlatModels/Delete/5
+        // POST: RoomModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var flatModel = await _context.Flats.FindAsync(id);
-            _context.Flats.Remove(flatModel);
+            var roomModel = await _context.Rooms.FindAsync(id);
+            _context.Rooms.Remove(roomModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FlatModelExists(int id)
+        private bool RoomModelExists(int id)
         {
-            return _context.Flats.Any(e => e.FlatID == id);
+            return _context.Rooms.Any(e => e.RoomID == id);
         }
     }
 }
