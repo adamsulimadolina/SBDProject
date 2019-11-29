@@ -51,18 +51,64 @@ namespace Project.Controllers
         {
             ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID");
             ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID");
+            ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
             return View();
         }
 
         // POST: AdvertisementModels/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AdvertisementID,AdvertisementType,OwnerID,FlatID")] AdvertisementModel advertisementModel)
         {
             if (ModelState.IsValid)
             {
+                _context.Add(advertisementModel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
+            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
+            return View(advertisementModel);
+        }
+
+        // GET: AdvertisementModels/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var advertisementModel = await _context.Advertisements.FindAsync(id);
+            if (advertisementModel == null)
+            {
+                return NotFound();
+            }
+            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
+            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
+            return View(advertisementModel);
+        }*/
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind(Prefix = "Item1")] AdvertisementModel advertisementModel,
+            [Bind(Prefix = "Item2")] FlatModel flatModel, string city)
+        {
+            var cityModel = await _context.Citys.ToListAsync();
+            foreach (var elem in cityModel)
+            {
+                if (elem.CityName == city)
+                {
+                    flatModel.CityID = elem.CityID;
+                    break;
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Add(flatModel);
                 _context.Add(advertisementModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
