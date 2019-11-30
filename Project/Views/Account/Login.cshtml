@@ -5,12 +5,12 @@
 }
     <div class="row mt-5 px-3">
         
-        <div class="col-lg-4 col-md-6 align-self-center mx-auto">
+        <div class="col-lg-4 col-md-6 align-self-center mx-auto text-color-create">
             <h1 class="">Zaloguj Się</h1>
         </div>
     </div>
     <div class="row mb-5 mt-3 p-3">
-        <div class="col-lg-4 col-md-6 align-self-center mx-auto">
+        <div class="col-lg-4 col-md-6 align-self-center mx-auto text-color-create">
             <form asp-action="Login">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -24,7 +24,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group" >
-                    <input type="submit" value="Zaloguj" class="btn btn-dark" />
+                    <input type="submit" value="Zaloguj" class="btn btn-secondary" />
                 </div>
             </form>
             

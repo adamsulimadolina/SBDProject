@@ -118,7 +118,7 @@ header {
     }
 
     .navv a {
-        color: #2C2B2B;
+        color: #112B49;
         text-decoration: none;
         text-transform: uppercase;
         font-size: 14px;
@@ -146,6 +146,9 @@ header {
 
 .text-color {
     color: #393F4C
+}
+text-color-create {
+    color: #000000;
 }
 .panel {
     background-color: #33BEFF;
