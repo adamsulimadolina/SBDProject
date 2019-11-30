@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,28 @@ namespace Project.Controllers
         // GET: AdvertisementModels
         public async Task<IActionResult> Index()
         {
-            var projectContext = _context.Advertisements.Include(a => a.Flat).Include(a => a.Owner);
-            return View(await projectContext.ToListAsync());
+            var id = this.HttpContext.Session.GetString("UserID");
+
+            if (id != null)
+            {
+                ViewBag.AbletoModify = int.Parse(id);
+                var tmp = _context.Owners.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
+
+                if (tmp.Count != 0)
+                {
+                    return View(await _context.Advertisements.ToListAsync());
+                }
+                else
+                {
+                    return RedirectToAction("Create", "OwnerModels");
+                }
+            }
+            else
+            {
+
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
 
         // GET: AdvertisementModels/Details/5
@@ -49,53 +70,24 @@ namespace Project.Controllers
         // GET: AdvertisementModels/Create
         public IActionResult Create()
         {
-            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID");
-            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID");
-            ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
-            return View();
+            var id = this.HttpContext.Session.GetString("UserID");
+            if (id != null)
+            {
+                ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
+                return View();
+            }
+            else
+            {
+
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
-
-        // POST: AdvertisementModels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdvertisementID,AdvertisementType,OwnerID,FlatID")] AdvertisementModel advertisementModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(advertisementModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
-            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
-            return View(advertisementModel);
-        }
-
-        // GET: AdvertisementModels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var advertisementModel = await _context.Advertisements.FindAsync(id);
-            if (advertisementModel == null)
-            {
-                return NotFound();
-            }
-            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
-            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
-            return View(advertisementModel);
-        }*/
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(Prefix = "Item1")] AdvertisementModel advertisementModel,
-            [Bind(Prefix = "Item2")] FlatModel flatModel, string city)
+            [Bind(Prefix = "Item2")] FlatModel flatModel, string city, [Bind(Prefix = "Item3")] RoomModel roomModel)
         {
             var cityModel = await _context.Citys.ToListAsync();
             foreach (var elem in cityModel)
@@ -108,13 +100,31 @@ namespace Project.Controllers
             }
             if (ModelState.IsValid)
             {
+                var flats = await _context.Flats.ToListAsync();
+                var tmp_id = 1;
+                foreach (var flat in flats)
+                {
+                    if (flat.FlatID > tmp_id) tmp_id = flat.FlatID;
+                }
+                tmp_id++;
                 _context.Add(flatModel);
+                await _context.SaveChangesAsync();
+                advertisementModel.OwnerID = int.Parse(this.HttpContext.Session.GetString("UserID"));
+                advertisementModel.FlatID = tmp_id;
+                roomModel.FlatID = tmp_id;
+                var this_flat = await _context.Flats
+                    .FirstOrDefaultAsync(m => m.FlatID == tmp_id);
+                var this_owner = await _context.Owners
+                    .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));
+                advertisementModel.Flat = this_flat;
+                advertisementModel.Owner = this_owner;
+                advertisementModel.OwnerID = this_owner.OwnerID;
+                roomModel.Flat = this_flat;
+                _context.Add(roomModel);
                 _context.Add(advertisementModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
-            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
             return View(advertisementModel);
         }
 

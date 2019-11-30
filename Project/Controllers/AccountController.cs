@@ -77,7 +77,6 @@ namespace Project.Controllers
                 }
                 return RedirectToAction("Index", "Home");
             }
-            return View();
         }
 
         public ActionResult LoggedIn()

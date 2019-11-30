@@ -69,7 +69,19 @@ namespace Project.Controllers
         // GET: OwnerModels/Create
         public IActionResult Create()
         {
-            if (TempData["ModelState"] != null)
+            var id = this.HttpContext.Session.GetString("UserID");
+
+            if (id != null)
+            {
+                ViewBag.AbletoModify = int.Parse(id);
+                var tmp = _context.Owners.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
+
+                if (tmp.Count != 0)
+                {
+                    return RedirectToAction("Index", "AdvertisementModels");
+                }
+            }
+                if (TempData["ModelState"] != null)
             {
                 ModelState.AddModelError(string.Empty, (string)TempData["ModelState"]);
             }
@@ -94,7 +106,7 @@ namespace Project.Controllers
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "AdvertisementModels");
             }
             TempData["ModelState"] = "You must fill in all of the fields";
             //ViewData["UserID"] = new SelectList(_context.Set<UserModel>(), "UserID", "UserID", tenantModel.UserID);
