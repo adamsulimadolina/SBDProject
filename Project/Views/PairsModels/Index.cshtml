@@ -4,41 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="row py-5 my-3 justify-content-center panel-minor">
+    <h2 class="">Twoje Pary</h2>
+</div>
 
-    <div class="row">
-        <table class=" table col-lg-6 mx-auto col-md-10 my-5 table-striped ">
-            <thead class="">
+<div class="row">
+    <table class=" table col-lg-6 mx-auto col-md-10  table-striped ">
+        <thead class="">
+            <tr>
+                <th>
+                    ID najemcy
+                </th>
+                <th>
+                    Procent dopasowania
+                </th>
+                <th>
+                   Czat z Użytkownikiem
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                // if (item.TenantID_1 != ViewBag.LogTenantId)
+                // {
                 <tr>
-                    <th>
-                        ID najemcy
-                    </th>
-                    <th>
-                        Procent dopasowania
-                    </th>
-                    <th>
-                       Wyślij Wiadomość
-                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenantID_2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PairCompatibility)%
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    // if (item.TenantID_1 != ViewBag.LogTenantId)
-                    // {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TenantID_2)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PairCompatibility)%
-                        </td>                       
-                        <td>
-                            <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
-                        </td>
-                    </tr>
-                    //}
+                //}
 
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>
