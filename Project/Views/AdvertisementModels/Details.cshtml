@@ -1,35 +1,107 @@
 ﻿@model Project.Models.AdvertisementModel
-
+ 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "EFR";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły ogłoszenia</h1>
 
 <div>
-    <h4>AdvertisementModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AdvertisementType)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AdvertisementType)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Owner)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Owner.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Owner.OwnerID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Owner.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Flat)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Owner.Surname)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Flat.FlatID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Owner.Surname)
         </dd>
     </dl>
 </div>
+<h1>Informacje o mieszkaniu</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Flat.KitchenType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Flat.KitchenType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Flat.RoomsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Flat.RoomsCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Flat.Surface)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Flat.Surface)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Flat.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Flat.City.CityName)
+        </dd>
+    </dl>
+</div>
+<h1>Informacje o pokoju</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Powierzchnia
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomSurface
+        </dd>
+        <dt class="col-sm-2">
+            Balkon
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomBalcony
+        </dd>
+        <dt class="col-sm-2">
+            Szafa
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomWardrobe
+        </dd>
+        <dt class="col-sm-2">
+            Łóżko
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomBed
+        </dd>
+        <dt class="col-sm-2">
+            Dodatkowe informacje
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomAdd
+        </dd>
+        <dt class="col-sm-2">
+            Cena
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.RoomRent zł miesięcznie
+        </dd>
+    </dl>
+</div>
+    
 <div>
     <a asp-action="Edit" asp-route-id="@Model.AdvertisementID">Edit</a> |
     <a asp-action="Index">Back to List</a>

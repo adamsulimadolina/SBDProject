@@ -15,12 +15,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.AdvertisementType)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Flat)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -31,15 +25,7 @@
                 @Html.DisplayFor(modelItem => item.AdvertisementType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Owner.OwnerID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Flat.FlatID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AdvertisementID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AdvertisementID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdvertisementID">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a>
             </td>
         </tr>
 }

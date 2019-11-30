@@ -14,6 +14,7 @@ namespace Project.Controllers
     public class AdvertisementModelsController : Controller
     {
         private readonly ProjectContext _context;
+        private readonly List<string> adType = new List<string>(new string[] { "całe mieszkanie", "pojedynczy pokój" });
 
         public AdvertisementModelsController(ProjectContext context)
         {
@@ -36,6 +37,23 @@ namespace Project.Controllers
 
         }
 
+        public async Task<IActionResult> MyAds()
+        {
+            var id = this.HttpContext.Session.GetString("UserID");    
+            if (id != null)
+            {
+                var owner = await _context.Owners
+                    .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));
+                var ads = _context.Advertisements.Where(m => m.Owner.Equals(owner)).ToList();
+                return View(ads);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+        }
+
         // GET: AdvertisementModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -43,18 +61,28 @@ namespace Project.Controllers
             {
                 return NotFound();
             }
-
             var advertisementModel = await _context.Advertisements
                 .Include(a => a.Flat)
+                .Include(a => a.Flat.City)
                 .Include(a => a.Owner)
                 .FirstOrDefaultAsync(m => m.AdvertisementID == id);
             if (advertisementModel == null)
             {
                 return NotFound();
             }
-
+            var roomModel = await _context.Rooms
+                .Include(a => a.Flat)
+                .Include(a => a.Flat.City)
+                .FirstOrDefaultAsync(m => m.FlatID == advertisementModel.FlatID);
+            ViewBag.RoomSurface = roomModel.Surface;
+            ViewBag.RoomWardrobe = roomModel.Wardrobe ? "TAK" : "NIE";
+            ViewBag.RoomBalcony = roomModel.Balcony ? "TAK" : "NIE";
+            ViewBag.RoomBed = roomModel.Bed ? "TAK" : "NIE";
+            ViewBag.RoomAdd = roomModel.AdditionalInfo;
+            ViewBag.RoomRent = roomModel.Rent;
             return View(advertisementModel);
         }
+
 
         // GET: AdvertisementModels/Create
         public IActionResult Create()
@@ -63,6 +91,7 @@ namespace Project.Controllers
             if (id != null)
             {
                 ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
+                ViewData["AdType"] = new SelectList(adType);
                 ViewBag.AbletoModify = int.Parse(id);
                 var tmp = _context.Owners.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
 
@@ -88,16 +117,8 @@ namespace Project.Controllers
         public async Task<IActionResult> Create([Bind(Prefix = "Item1")] AdvertisementModel advertisementModel,
             [Bind(Prefix = "Item2")] FlatModel flatModel, string city, [Bind(Prefix = "Item3")] RoomModel roomModel)
         {
-            //var cityModel = await _context.Citys.ToListAsync();
-            //foreach (var elem in cityModel)
-            //{
-            //    if (elem.CityName == city)
-            //    {
-            //        flatModel.CityID = elem.CityID;
-            //        break;
-            //    }
-            //}
-            flatModel.setCity(city, _context);
+            var cityModel = _context.Citys.ToList();
+            flatModel = FlatModel.setCity(city, flatModel, cityModel);
             if (ModelState.IsValid)
             {
                 _context.Add(flatModel);

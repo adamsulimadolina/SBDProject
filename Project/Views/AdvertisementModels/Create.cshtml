@@ -14,8 +14,7 @@
             <h2>AdvertisementModel</h2>
             <div class="form-group">
                 <label asp-for="Item1.AdvertisementType" class="control-label"></label>
-                <input asp-for="Item1.AdvertisementType" class="form-control" />
-                <span asp-validation-for="Item1.AdvertisementType" class="text-danger"></span>
+                <select asp-for="Item1.AdvertisementType" class="form-control" asp-items="ViewBag.AdType"></select>
             </div>
             <h2>FlatModel</h2>
             <div class="form-group">

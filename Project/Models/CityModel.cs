@@ -9,6 +9,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Project.Models
 {
@@ -18,6 +19,7 @@ namespace Project.Models
         [Key]
         public int CityID { get; set; }
         [MaxLength(50)]
+        [DisplayName("Miasto")]
         public string CityName { get; set; }
 
     }

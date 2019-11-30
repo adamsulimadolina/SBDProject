@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using Project.Data;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Project.Models
 {
@@ -19,13 +21,17 @@ namespace Project.Models
         
         [Key]
         public int FlatID { get; set; }
-        
+
+        [DisplayName("Liczba pokoi")]
         public int RoomsCount { get; set; }
+        [DisplayName("Liczba łazienek")]
         public int BathroomCount { get; set; }
 
         [Required]
-        public double Surface { get; set; }
+        [DisplayName("Powierzchnia całkowita")]
+        public int Surface { get; set; }
         [StringLength(20)]
+        [DisplayName("Typ kuchni")]
         public string KitchenType { get; set; }
         
         [ForeignKey("CityID")]
@@ -33,18 +39,20 @@ namespace Project.Models
 
         public virtual CityModel City { get; set; }
 
-        public async void setCity(string city, ProjectContext _context)
+        public static FlatModel setCity(string city, FlatModel flatModel, List<CityModel> cityList)
         {
-            var cityModel = await _context.Citys.ToListAsync();
-            foreach (var elem in cityModel)
+            FlatModel tmp = new FlatModel();
+            tmp = flatModel;
+            foreach (var elem in cityList)
             {
                 if (elem.CityName == city)
                 {
-                    CityID = elem.CityID;
-                    City = elem;
+                    tmp.CityID = elem.CityID;
+                    tmp.City = elem;
                     break;
                 }
             }
+            return tmp;
         }
 
     }
