@@ -54,22 +54,26 @@ body {
   /* Set the fixed height of the footer here */
   height: 31px;
   line-height: 30px; /* Vertically center the text there */
+  background-color:black;
+  color:white !important;
+ text-align:center;
+  
 }
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
-
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700&display=swap');
 body {
     margin: 0;
-    margin-bottom:30px;
+    margin-bottom: 30px;
     background: #FFFFFF;
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
 }
 
 .containerr {
     width: 90%;
     margin: 0 auto;
     text-align: center;
-    font-weight: 800;
+    font-weight: 400;
     padding: 2vh 0vh;
 }
 .containerr-child {
@@ -84,6 +88,8 @@ body {
 }
 header {
     background: #FFFFFF;
+    box-shadow: 0 0px 20px 0 rgba(0,0,0,0.1);
+    font-size: 1.6rem;
 }
 
     header::after {
@@ -157,6 +163,22 @@ text-color-create {
 }
 .panel-child{
     height:40vh;
+}
+.panel-minor {
+   
+    color: #000000;
+    letter-spacing: .5em;
+    font-size: 2em;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight:700;
+}
+h2 {
+    font-weight: 700;
+}
+.active {
+    font-weight:700;
+    
 }
 .buttons{
     border-radius:14px;

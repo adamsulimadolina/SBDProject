@@ -56,6 +56,7 @@ namespace Project.Controllers
             {
                 using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
                 {
+                    
                     var query1 = from tenant in db.Tenants
                                where tenant.TenantID == id
                                select tenant;
@@ -63,7 +64,17 @@ namespace Project.Controllers
                     var query2 = from user in db.User
                                  where user.UserID == najemca.UserID
                                  select user;
-
+                    if(query2.FirstOrDefault()==null)
+                    {
+                        var query3 = from owner in db.Owners
+                                     where owner.OwnerID == id
+                                     select owner;
+                        var Owner = query3.FirstOrDefault();
+                        var query4 = from user in db.User
+                                     where user.UserID == najemca.UserID
+                                     select user;
+                        query2 = query4;
+                    }
                     ViewBag.selectedUser = query2.FirstOrDefault();
                 }
             }
