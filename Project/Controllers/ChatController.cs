@@ -30,8 +30,7 @@ namespace Project.Controllers
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
             _optionsBuilder.UseSqlServer(_connectionString);
             var options = new PusherOptions();
-            options.Cluster = "eu";
-            
+            options.Cluster = "eu";            
             pusher = new Pusher(
            "904061",
            "85b88ce58ddae993b77e",
@@ -39,7 +38,28 @@ namespace Project.Controllers
         }
        
         
-
+        public ActionResult OwnersHelp(int? id)
+        {
+            return RedirectToAction("Index");
+        }
+        public ActionResult TenatsHelp(int? id)
+        {
+            if(id!=null)
+            {
+                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                {
+                    var query3 = from owner in db.Owners
+                                 where owner.OwnerID == id
+                                 select owner;
+                    var Owner = query3.FirstOrDefault();
+                    var query4 = from user in db.User
+                                 where user.UserID == Owner.UserID
+                                 select user;
+                    SelectedUser = query4.FirstOrDefault();
+                }
+            }
+            return RedirectToAction("Index");
+        }
       
         public ActionResult Index(int? id)
         {
@@ -64,17 +84,7 @@ namespace Project.Controllers
                     var query2 = from user in db.User
                                  where user.UserID == najemca.UserID
                                  select user;
-                    if(query2.FirstOrDefault()==null)
-                    {
-                        var query3 = from owner in db.Owners
-                                     where owner.OwnerID == id
-                                     select owner;
-                        var Owner = query3.FirstOrDefault();
-                        var query4 = from user in db.User
-                                     where user.UserID == najemca.UserID
-                                     select user;
-                        query2 = query4;
-                    }
+                   
                     ViewBag.selectedUser = query2.FirstOrDefault();
                 }
             }
