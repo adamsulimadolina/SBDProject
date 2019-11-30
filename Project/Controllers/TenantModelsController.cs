@@ -27,14 +27,12 @@ namespace SBDProject.Controllers
         }
 
         // GET: TenantModels
-        public async Task<IActionResult> Index(string message)
+        public async Task<IActionResult> Index()
         {
+           
             // var applicationDbContext = _context.TenantModel.Include(t => t.User);
             var id = this.HttpContext.Session.GetString("UserID");
-            if (message != null)
-            {
-                ViewBag.Message = message;
-            }
+           
             if (id != null)
             {
                 ViewBag.AbletoModify = int.Parse(id);
@@ -85,10 +83,8 @@ namespace SBDProject.Controllers
             foreach(var tenant in tenants)
             {
                 if(tenant.UserID== int.Parse(this.HttpContext.Session.GetString("UserID")))
-                {
-                    // ViewBag.Message = "Zostałeś już najemcą na naszym portalu";
-                    string message = "Zostałeś już najemcą na naszym portalu";
-                    return RedirectToAction("Index","TenantModels",message);
+                {                                      
+                    return RedirectToAction("Index","PairsModels");
                 }
             }
             if (TempData["ModelState"] != null)

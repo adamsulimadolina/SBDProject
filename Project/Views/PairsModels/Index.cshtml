@@ -5,46 +5,40 @@
 }
 
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-               Tenant ID
-            </th>
-            <th>
-                Compatibility
-            </th>
-
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-           // if (item.TenantID_1 != ViewBag.LogTenantId)
-           // {
+    <div class="row">
+        <table class=" table col-lg-6 mx-auto col-md-10 my-5 table-striped ">
+            <thead class="">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TenantID_2)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PairCompatibility)%
-                    </td>
-
-
-                    <td>
-
-                        <a asp-action="Details" asp-route-id="@item.PairID">Szczegóły</a>
-
-                    </td>
-                    <td>
-                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
-                    </td>
+                    <th>
+                        ID najemcy
+                    </th>
+                    <th>
+                        Procent dopasowania
+                    </th>
+                    <th>
+                       Wyślij Wiadomość
+                    </th>
                 </tr>
-            //}
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    // if (item.TenantID_1 != ViewBag.LogTenantId)
+                    // {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenantID_2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PairCompatibility)%
+                        </td>                       
+                        <td>
+                            <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
+                        </td>
+                    </tr>
+                    //}
 
-        }
-    </tbody>
-</table>
+                }
+            </tbody>
+        </table>
+    </div>
