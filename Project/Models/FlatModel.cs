@@ -9,6 +9,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using Project.Data;
 
 namespace Project.Models
 {
@@ -31,6 +32,20 @@ namespace Project.Models
         public int CityID { get; set; }
 
         public virtual CityModel City { get; set; }
+
+        public async void setCity(string city, ProjectContext _context)
+        {
+            var cityModel = await _context.Citys.ToListAsync();
+            foreach (var elem in cityModel)
+            {
+                if (elem.CityName == city)
+                {
+                    CityID = elem.CityID;
+                    City = elem;
+                    break;
+                }
+            }
+        }
 
     }
 }
