@@ -26,8 +26,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.AdvertisementType)
                     </td>
+                    
                     <td>
-                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.OwnerID">Wiadomość</a>
+                        <a asp-area="" asp-controller="Chat" asp-action="ChatFromAds" asp-route-id="@item.OwnerID">Wiadomość</a>
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a>
