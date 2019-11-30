@@ -27,24 +27,13 @@ namespace Project.Controllers
 
             if (id != null)
             {
-                ViewBag.AbletoModify = int.Parse(id);
-                var tmp = _context.Owners.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
-
-                if (tmp.Count != 0)
-                {
-                    return View(await _context.Advertisements.ToListAsync());
-                }
-                else
-                {
-                    return RedirectToAction("Create", "OwnerModels");
-                }
+                return View(await _context.Advertisements.ToListAsync());
             }
             else
             {
-
                 return RedirectToAction("Login", "Account");
             }
-            
+
         }
 
         // GET: AdvertisementModels/Details/5
@@ -74,7 +63,17 @@ namespace Project.Controllers
             if (id != null)
             {
                 ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
-                return View();
+                ViewBag.AbletoModify = int.Parse(id);
+                var tmp = _context.Owners.Where(m => m.UserID == int.Parse(id)).Select(m => m.UserID).ToList();
+
+                if (tmp.Count != 0)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Create", "OwnerModels");
+                }
             }
             else
             {
@@ -89,37 +88,42 @@ namespace Project.Controllers
         public async Task<IActionResult> Create([Bind(Prefix = "Item1")] AdvertisementModel advertisementModel,
             [Bind(Prefix = "Item2")] FlatModel flatModel, string city, [Bind(Prefix = "Item3")] RoomModel roomModel)
         {
-            var cityModel = await _context.Citys.ToListAsync();
-            foreach (var elem in cityModel)
-            {
-                if (elem.CityName == city)
-                {
-                    flatModel.CityID = elem.CityID;
-                    break;
-                }
-            }
+            //var cityModel = await _context.Citys.ToListAsync();
+            //foreach (var elem in cityModel)
+            //{
+            //    if (elem.CityName == city)
+            //    {
+            //        flatModel.CityID = elem.CityID;
+            //        break;
+            //    }
+            //}
+            flatModel.setCity(city, _context);
             if (ModelState.IsValid)
             {
+                _context.Add(flatModel);
+                await _context.SaveChangesAsync();
+
                 var flats = await _context.Flats.ToListAsync();
                 var tmp_id = 1;
                 foreach (var flat in flats)
                 {
                     if (flat.FlatID > tmp_id) tmp_id = flat.FlatID;
                 }
-                tmp_id++;
-                _context.Add(flatModel);
-                await _context.SaveChangesAsync();
-                advertisementModel.OwnerID = int.Parse(this.HttpContext.Session.GetString("UserID"));
-                advertisementModel.FlatID = tmp_id;
-                roomModel.FlatID = tmp_id;
+
                 var this_flat = await _context.Flats
                     .FirstOrDefaultAsync(m => m.FlatID == tmp_id);
+                    
                 var this_owner = await _context.Owners
                     .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));
+
+
                 advertisementModel.Flat = this_flat;
+                advertisementModel.FlatID = this_flat.FlatID;
                 advertisementModel.Owner = this_owner;
                 advertisementModel.OwnerID = this_owner.OwnerID;
                 roomModel.Flat = this_flat;
+                roomModel.FlatID = this_flat.FlatID;
+
                 _context.Add(roomModel);
                 _context.Add(advertisementModel);
                 await _context.SaveChangesAsync();
