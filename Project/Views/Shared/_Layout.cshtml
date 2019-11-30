@@ -36,10 +36,16 @@
                     {
 
                         <li>
-                            <a id="login" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            <a id="login" asp-area="" asp-controller="AdvertisementModels" asp-action="Index">Ogłoszenia</a>
                         </li>
                         <li>
                             <a id="pairs" asp-area="" asp-controller="PairsModels" asp-action="Index">Twoje Dopasowania</a>
+                        </li>
+                        <li>
+                            <a id="tenant" asp-area="" asp-controller="TenantModels" asp-action="Create">Zostań Najemcą</a>
+                        </li>
+                        <li>
+                            <a id="owner" asp-area="" asp-controller="OwnerModels" asp-action="Create">Zostań Właścicielem</a>
                         </li>
                     }
                     else
@@ -88,14 +94,22 @@
         </script>
     </environment>
     <script src="~/js/app.js" asp-append-version="true"></script>
-    <script>// Write your JavaScript code.
+    <script>
+    $(document).ready(function() {
+    $("[href]").each(function() {
+        if (this.href == window.location.href) {
+            $(this).addClass("active");
+        }
+    });
+});
+
 mybutton = document.getElementById("top-btn");
 
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
         mybutton.style.display = "block";
     } else {
         mybutton.style.display = "none";

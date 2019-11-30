@@ -29,9 +29,10 @@ namespace SBDProject.Controllers
         // GET: TenantModels
         public async Task<IActionResult> Index()
         {
+           
             // var applicationDbContext = _context.TenantModel.Include(t => t.User);
             var id = this.HttpContext.Session.GetString("UserID");
-
+           
             if (id != null)
             {
                 ViewBag.AbletoModify = int.Parse(id);
@@ -76,6 +77,16 @@ namespace SBDProject.Controllers
         // GET: TenantModels/Create
         public IActionResult Create()
         {
+            var query1 = from tenant in _context.Tenants                         
+                         select tenant;
+            var tenants = query1.ToList();
+            foreach(var tenant in tenants)
+            {
+                if(tenant.UserID== int.Parse(this.HttpContext.Session.GetString("UserID")))
+                {                                      
+                    return RedirectToAction("Index","PairsModels");
+                }
+            }
             if (TempData["ModelState"] != null)
             {
                 ModelState.AddModelError(string.Empty, (string)TempData["ModelState"]);
@@ -93,6 +104,7 @@ namespace SBDProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TenantID,Name,Surname,Age,IsSmoking,IsVege,Status,Gender,UserID")] TenantModel tenantModel)
         {
+            
             if (ModelState.IsValid)
             {
 
@@ -101,7 +113,6 @@ namespace SBDProject.Controllers
                 _context.Add(tenantModel);
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
-
                 return RedirectToAction(nameof(Index));
             }
             TempData["ModelState"] = "You must fill in all of the fields";

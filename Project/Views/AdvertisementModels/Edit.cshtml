@@ -4,17 +4,16 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>AdvertisementModel</h4>
-<hr />
-<div class="row">
+<div class="row py-3 my-3 justify-content-center panel-minor" >
+    <h2>EDYCJA OGŁOSZENIA</h2>
+</div>
+<div class="row justify-content-center py-3">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="AdvertisementID" />
             <div class="form-group">
-                <label asp-for="AdvertisementType" class="control-label"></label>
+                <label  class="control-label">Typ Ogłoszenia</label>
                 <input asp-for="AdvertisementType" class="form-control" />
                 <span asp-validation-for="AdvertisementType" class="text-danger"></span>
             </div>
@@ -29,14 +28,14 @@
                 <span asp-validation-for="FlatID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót</a>
 </div>
 
 @section Scripts {

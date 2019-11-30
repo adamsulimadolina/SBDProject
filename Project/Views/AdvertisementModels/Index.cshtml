@@ -4,30 +4,41 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row py-5 my-3 justify-content-center panel-minor">
+    <h2 class="">OGŁOSZENIA   WYNAJMU</h2>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AdvertisementType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdvertisementType)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row p-1">
+
+    <table class=" table col-lg-8 mx-auto col-md-10  table-striped ">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.AdvertisementType)
+                </th>
+                <th>Czat</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdvertisementType)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.OwnerID">Wiadomość</a>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row p-5 justify-content-center">
+
+    <a asp-action="Create" class="btn btn-primary">Stwórz własne ogłoszenie</a>
+
+</div>
