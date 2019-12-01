@@ -16,7 +16,7 @@
     </div>   
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px;">
+            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px; height:100%;">
                 <div class="main visible-md visible-lg">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
@@ -27,7 +27,7 @@
                                 <div class="__no__chat__">
                                     <p>Select a contact to chat with</p>
                                 </div>
-                                <div class="panel-body users__body">
+                                <div class="panel-body users__body" style="max-height:80%; overflow:auto;">
                                     <ul id="contacts" class="list-group">
 
                                         @foreach (var user in @ViewBag.allUsers)
