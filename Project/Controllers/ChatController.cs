@@ -29,6 +29,7 @@ namespace Project.Controllers
             _optionsBuilder = new DbContextOptionsBuilder<ProjectContext>();
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
             _optionsBuilder.UseSqlServer(_connectionString);
+            SelectedUser = new UserModel();
             var options = new PusherOptions();
             options.Cluster = "eu";            
             pusher = new Pusher(
@@ -38,65 +39,67 @@ namespace Project.Controllers
         }
        
         
-        public ActionResult OwnersHelp(int? id)
-        {
-            return RedirectToAction("Index");
+        public ActionResult ChatFromPairs(int? id)
+        {           
+            return RedirectToAction("Index", new { select = 2 , userid = id });
         }
-        public ActionResult TenatsHelp(int? id)
+        public ActionResult ChatFromAds(int? id)
         {
-            if(id!=null)
-            {
-                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
-                {
-                    var query3 = from owner in db.Owners
-                                 where owner.OwnerID == id
-                                 select owner;
-                    var Owner = query3.FirstOrDefault();
-                    var query4 = from user in db.User
-                                 where user.UserID == Owner.UserID
-                                 select user;
-                    SelectedUser = query4.FirstOrDefault();
-                }
-            }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { select = 1 , userid = id});
         }
       
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? select,int? userid)
         {
-            
+            switch(select)
+            {
+                case null:
+                    ViewBag.selectedUser = new UserModel()
+                    {
+                        UserID = 0,
+                        Login = "0",
+                    };
+                    break;
+                case 1:
+                    using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                    {
+                        var query3 = from owner in db.Owners
+                                     where owner.OwnerID == userid
+                                     select owner;
+                        var Owner = query3.FirstOrDefault();
+                        var query4 = from user in db.User
+                                     where user.UserID == Owner.UserID
+                                     select user;
+                        ViewBag.selectedUser = query4.FirstOrDefault();
+                    }
+                    break;
+                case 2:
+                    using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                    {
+
+                        var query1 = from tenant in db.Tenants
+                                     where tenant.TenantID == userid
+                                     select tenant;
+                        var najemca = query1.FirstOrDefault();
+                        var query2 = from user in db.User
+                                     where user.UserID == najemca.UserID
+                                     select user;
+
+                        ViewBag.selectedUser = query2.FirstOrDefault();
+                    }
+                    break;
+            }
+           
             if (this.HttpContext.Session.Get("UserID") == null)
             {
                 return RedirectToAction("Login","Account");
             }
 
-            UserModel currentUser = new UserModel { UserID= Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
-            Login = this.HttpContext.Session.GetString("Username")
-        };
-            if (id != null)
+            UserModel currentUser = new UserModel
             {
-                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
-                {
-                    
-                    var query1 = from tenant in db.Tenants
-                               where tenant.TenantID == id
-                               select tenant;
-                    var najemca = query1.FirstOrDefault();
-                    var query2 = from user in db.User
-                                 where user.UserID == najemca.UserID
-                                 select user;
-                   
-                    ViewBag.selectedUser = query2.FirstOrDefault();
-                }
-            }
-            else
-            {
-                ViewBag.selectedUser = new UserModel
-                {
-                    UserID = 0,
-                    Login = "0",
-                };
-            }
-
+                UserID = Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
+                Login = this.HttpContext.Session.GetString("Username")
+            };
+                           
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
 
