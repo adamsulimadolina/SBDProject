@@ -7,15 +7,13 @@
 </head>
 <body>
 
-    <!-- Navigation Bar -->
     <div class="containerr-child my-4 border-bottom">
         <nav class="navv">
             <div class="navbar-header">
                 <p class="" style="font-size:large">Wiadomości - @ViewBag.currentUser.Login </p>
             </div>
         </nav>
-    </div>
-    <!-- / Navigation Bar -->
+    </div>   
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px;">
@@ -50,8 +48,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9 chat__body">
                 <div class="row" style="height:65vh;">
@@ -64,7 +60,7 @@
                     <div class="chat__type__body">
                         <div class="chat__type">
                             <textarea id="msg_box" placeholder="Type your message"></textarea>
-                            <button class="btn btn-dark " id="sendMessage">Send</button>
+                            <button class="btn btn-dark chat-btn" id="sendMessage">Send</button>
                         </div>
                     </div>
                     <div class="chat__typing">
@@ -219,7 +215,8 @@
         }, 1000);
         $('#msg_box').on('keyup',isTypingCallback);
         ///////////////////Sending Messages/////////////////////
-        $('#sendMessage').click( function() {
+        $('#sendMessage').click(function () {
+            if ($('#msg_box').val() === "") { return;}
             $.post("/send_message", {
                 Message: $('#msg_box').val(),
                 contact: currentContact.id,
