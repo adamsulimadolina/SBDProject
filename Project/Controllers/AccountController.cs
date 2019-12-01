@@ -107,8 +107,8 @@ namespace Project.Controllers
         {
             if(this.HttpContext.Session.Get("UserID") != null)
             {
-                this.HttpContext.Session.SetString("UserID", "");
-                this.HttpContext.Session.SetString("Username", "");
+                this.HttpContext.Session.Clear();
+                
             }
             return RedirectToAction("Index", "Home");
         }
