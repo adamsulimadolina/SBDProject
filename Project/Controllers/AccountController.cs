@@ -54,12 +54,24 @@ namespace Project.Controllers
             }
             if (ModelState.IsValid)
             {
+                LogsModel register_log = new LogsModel();
+                register_log.Log = "Registration - User: " + user.Login;
+                register_log.MessageDate = System.DateTime.Now;
+                register_log.UserR = user;
                 using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
                 {
                     db.User.Add(user);//db.Users.Add(user);
                     db.SaveChanges();
                 }
                 ModelState.Clear();
+                
+                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                {
+                    var usr = db.User.FirstOrDefault(u => u.Login == user.Login && u.Password == user.Password);
+                    register_log.UserID = usr.UserID;
+                    db.Logs.Add(register_log);
+                    db.SaveChanges();
+                }
                 ViewBag.Message = "Registration successfull" + user.Login;
                 return RedirectToAction("Index", "Home");
             }
@@ -82,11 +94,19 @@ namespace Project.Controllers
                 {
                     this.HttpContext.Session.SetString("UserID", usr.UserID.ToString());
                     this.HttpContext.Session.SetString("Username", usr.Login.ToString());
+                    LogsModel register_log = new LogsModel();
+                    register_log.Log = "Login - User: " + usr.Login;
+                    register_log.MessageDate = System.DateTime.Now;
+                    register_log.UserR = usr;
+                    register_log.UserID = usr.UserID;
+                    db.Logs.Add(register_log);
+                    db.SaveChanges();
                 }
                 else
                 {
                     ModelState.AddModelError("", "Username or Password is wrong.");
                 }
+                
                 return RedirectToAction("Index", "Home");
             }
         }
