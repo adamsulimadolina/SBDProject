@@ -270,3 +270,6 @@ h2 {
 #a-footer:hover{
     color:cadetblue;
 }
+.chat-btn:disabled, .chat-btn:active, .chat-btn:visited, chat-btn:focus {
+    color: #fff;
+}
