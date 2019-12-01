@@ -20,36 +20,36 @@ namespace Project.Controllers
             _context = context;
         }
 
-        // GET: FlatModels
-        public async Task<IActionResult> Index()
-        {
-            if(!Methods.checkAdmin(this.HttpContext.Session.GetString("UserID"), _context))
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            var projectContext = _context.Flats.Include(f => f.City);
-            return View(await projectContext.ToListAsync());
-        }
+        //// GET: FlatModels
+        //public async Task<IActionResult> Index()
+        //{
+        //    if(!Methods.checkAdmin(this.HttpContext.Session.GetString("UserID"), _context))
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    var projectContext = _context.Flats.Include(f => f.City);
+        //    return View(await projectContext.ToListAsync());
+        //}
 
-        // GET: FlatModels/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: FlatModels/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var flatModel = await _context.Flats
-                .Include(f => f.City)
-                .FirstOrDefaultAsync(m => m.FlatID == id);
-            if (flatModel == null)
-            {
-                return NotFound();
-            }
+        //    var flatModel = await _context.Flats
+        //        .Include(f => f.City)
+        //        .FirstOrDefaultAsync(m => m.FlatID == id);
+        //    if (flatModel == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(flatModel);
-        }
-        // GET: FlatModels/Delete/5
+        //    return View(flatModel);
+        //}
+        //// GET: FlatModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

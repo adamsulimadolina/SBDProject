@@ -28,7 +28,10 @@ namespace Project.Controllers
 
             if (id != null)
             {
-                return View(await _context.Advertisements.ToListAsync());
+                return View(await _context.Advertisements
+                    .Include(m => m.Flat)
+                    .Include(m => m.Flat.City)
+                    .ToListAsync());
             }
             else
             {
@@ -47,7 +50,7 @@ namespace Project.Controllers
                     .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));
                 var owner = await _context.Owners
                    .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));   
-                if (user.Login == "admin")
+                if (Methods.checkAdmin(int.Parse(id), _context))
                 {
                     var ad = _context.Advertisements;
                     return View(ad.ToList());
@@ -170,10 +173,16 @@ namespace Project.Controllers
                 return NotFound();
             }
 
+            var user_id = int.Parse(this.HttpContext.Session.GetString("UserID"));
+
             var advertisementModel = await _context.Advertisements
                 .Include(a => a.Flat)
                 .Include(a => a.Flat.City)
                 .FirstOrDefaultAsync(m => m.AdvertisementID.Equals(id));
+
+            var owner_id = advertisementModel.OwnerID;
+
+            if (!Methods.checkOwner(owner_id, _context, user_id) && !Methods.checkAdmin(user_id, _context)) return RedirectToAction("Index");
             if (advertisementModel == null)
             {
                 return NotFound();

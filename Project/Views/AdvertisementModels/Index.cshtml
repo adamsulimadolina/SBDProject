@@ -10,14 +10,17 @@
 
 <div class="row p-1">
 
-    <table class=" table col-lg-8 mx-auto col-md-10  table-striped text-center">
+    <table class=" table col-lg-8 mx-auto col-md-10  table-striped ">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(modelItem => modelItem.AdvertisementType)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.Flat.City.CityName)
+                </th>
                 <th>Czat</th>
-                <th>Szczegóły Ogłoszenia</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +30,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.AdvertisementType)
                     </td>
-                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Flat.City.CityName)
+                    </td>
                     <td>
                         <a asp-area="" asp-controller="Chat" asp-action="ChatFromAds" asp-route-id="@item.OwnerID">Wiadomość</a>
                     </td>
