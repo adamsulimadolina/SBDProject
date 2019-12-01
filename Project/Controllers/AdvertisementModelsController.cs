@@ -39,11 +39,20 @@ namespace Project.Controllers
 
         public async Task<IActionResult> MyAds()
         {
-            var id = this.HttpContext.Session.GetString("UserID");    
+            var id = this.HttpContext.Session.GetString("UserID");
             if (id != null)
             {
-                var owner = await _context.Owners
+
+                var user = await _context.User
                     .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));
+                var owner = await _context.Owners
+                   .FirstOrDefaultAsync(m => m.UserID == int.Parse(this.HttpContext.Session.GetString("UserID")));   
+                if (user.Login == "admin")
+                {
+                    var ad = _context.Advertisements;
+                    return View(ad.ToList());
+                }
+                if (owner == null) return RedirectToAction("Create", "OwnerModels");
                 var ads = _context.Advertisements.Where(m => m.Owner.Equals(owner)).ToList();
                 return View(ads);
             }
@@ -161,14 +170,25 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            var advertisementModel = await _context.Advertisements.FindAsync(id);
+            var advertisementModel = await _context.Advertisements
+                .Include(a => a.Flat)
+                .Include(a => a.Flat.City)
+                .FirstOrDefaultAsync(m => m.AdvertisementID.Equals(id));
             if (advertisementModel == null)
             {
                 return NotFound();
             }
-            ViewData["FlatID"] = new SelectList(_context.Flats, "FlatID", "FlatID", advertisementModel.FlatID);
-            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", advertisementModel.OwnerID);
-            return View(advertisementModel);
+
+            var roomModel = await _context.Rooms
+                .Include(a => a.Flat)
+                .FirstOrDefaultAsync(m => m.FlatID.Equals(advertisementModel.FlatID));
+
+            ViewData["Adv"] = advertisementModel;
+            ViewData["Flat"] = advertisementModel.Flat;
+            ViewData["AdType"] = new SelectList(adType);
+            ViewData["Room"] = roomModel;
+            ViewData["CityName"] = new SelectList(_context.Citys, "CityName", "CityName");
+            return View();
         }
 
         // POST: AdvertisementModels/Edit/5
@@ -176,8 +196,15 @@ namespace Project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AdvertisementID,AdvertisementType,OwnerID,FlatID")] AdvertisementModel advertisementModel)
+        public async Task<IActionResult> Edit(int id, [Bind(Prefix ="Item1")] AdvertisementModel advertisementModel,
+            [Bind(Prefix = "Item2")] FlatModel flatModel, [Bind(Prefix = "Item3")] RoomModel roomModel, string city)
         {
+            var cityModel = _context.Citys.ToList();
+            var ownerModel = _context.Owners.ToList();
+            flatModel = FlatModel.setCity(city, flatModel, cityModel);
+            advertisementModel.Flat = flatModel;
+            advertisementModel = AdvertisementModel.setOwner(advertisementModel.OwnerID, advertisementModel, ownerModel);
+            roomModel.Flat = flatModel;
             if (id != advertisementModel.AdvertisementID)
             {
                 return NotFound();
@@ -187,6 +214,8 @@ namespace Project.Controllers
             {
                 try
                 {
+                    _context.Update(flatModel);
+                    _context.Update(roomModel);
                     _context.Update(advertisementModel);
                     await _context.SaveChangesAsync();
                 }
