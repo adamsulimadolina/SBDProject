@@ -1,0 +1,104 @@
+﻿@model Tuple<Project.Models.AdvertisementModel, Project.Models.FlatModel, Project.Models.RoomModel>
+@{
+    ViewData["Title"] = "Create";
+}
+    <div class="row py-3 my-3 justify-content-center panel-minor" >
+        <h2 class="" >TWOJE   OGŁOSZENIE</h2>
+    </div>
+
+
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <form asp-action="Create" class="">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row my-3">
+                <div class="form-group col-md-4 mx-auto my-3">
+                    <label  class="control-label ">Typ Ogłoszenia</label>
+                    <input asp-for="Item1.AdvertisementType" class="form-control" />
+                    <span asp-validation-for="Item1.AdvertisementType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row justify-content-md-between px-md-3">
+                <div class="col-md-5">
+                    <h2 class="my-4 border-bottom">Informacje o Mieszkaniu</h2>
+                    <div class="form-group">
+                        <label asp-for="Item2.RoomsCount" class="control-label"></label>
+                        <input asp-for="Item2.RoomsCount" class="form-control" />
+                        <span asp-validation-for="Item2.RoomsCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Item2.BathroomCount" class="control-label"></label>
+                        <input asp-for="Item2.BathroomCount" class="form-control" />
+                        <span asp-validation-for="Item2.BathroomCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Item2.Surface" class="control-label"></label>
+                        <input asp-for="Item2.Surface" class="form-control" />
+                        <span asp-validation-for="Item2.Surface" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Item2.KitchenType" class="control-label"></label>
+                        <input asp-for="Item2.KitchenType" class="form-control" />
+                        <span asp-validation-for="Item2.KitchenType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">City</label>
+                        <select class="form-control" asp-items="ViewBag.CityName" name="city"></select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <h2 class="my-4 border-bottom">Informacje o Pokoju</h2>
+                    <div class="form-group">
+                        <label asp-for="Item3.Surface" class="control-label"></label>
+                        <input asp-for="Item3.Surface" class="form-control" />
+                        <span asp-validation-for="Item3.Surface" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Item3.Balcony" /> @Html.DisplayNameFor(model => model.Item3.Balcony)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Item3.Bed" /> @Html.DisplayNameFor(model => model.Item3.Bed)
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Item3.Wardrobe" /> @Html.DisplayNameFor(model => model.Item3.Wardrobe)
+                        </label>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Item3.AdditionalInfo" class="control-label"></label>
+                        <input asp-for="Item3.AdditionalInfo" class="form-control" />
+                        <span asp-validation-for="Item3.AdditionalInfo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Item3.Rent" class="control-label"></label>
+                        <input asp-for="Item3.Rent" class="form-control" />
+                        <span asp-validation-for="Item3.Rent" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group row justify-content-center py-4 ">
+                <input type="submit" value="Create" class="btn btn-success btn-lg" />
+            </div>
+        </form>
+                
+     </div>
+</div>
+
+
+
+
+<div class="">
+    <a asp-action="Index">Powrót</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

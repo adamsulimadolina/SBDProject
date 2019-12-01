@@ -1,8 +1,48 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
     ViewData["Title"] = "Home Page";
 }
+    
+        <div class="row my-5 p-5  text-color panel">
+            <div class=" mx-auto text-center p-5 align-self-center">
+                <h3 class="my-5"> Witamy na Easy Flat Rent</h3>
+                <p class="">
+                    EFR to portal skierowany w stronę ludzi, którzy szukają mieszkania lub pokoju,
+                    który mogą wynająć i w nim zamieszkać.Wiemy, że znalezienie odpowiedniej osoby i miejsca jest ciężkim zadaniem dlatego też powstał
+                    ten portal żeby pomóc w szukaniu miejsca, które jest  idealne dla swoich preferencji oraz wynajęte od zaufanych właścicieli.
+                    Również ten portal jest stworzony osobom, które posiadają mieszkania lub pokoje do wynajęcia i chcą w łatwy i szybki sposób znaleźć najemcę.
+                    Portal umożliwia łatwą komunikację pomiędzy użytkownikami
+                </p>
+                <div class="row justify-content-around py-3">
+                    <a class="btn btn-light px-4 py-2 buttons" id="login" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj Się</a>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+                    <a class="btn btn-light px-4 py-2 buttons" id="register" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj się</a>
+                </div>  
+            </div>
+        </div>
+
+        <div class="row my-5 text-color panel-child py-5 align-content-center">
+            
+            <div class="col-sm-4 col-lg-4 text-center p-4 ">
+                <img src="~/182159321537856847-128.png" />
+                <p class="p-2">Wystawianie ogłoszeń o mieszkaniach i pokojach</p>
+            </div>
+            <div class="col-sm-4 col-lg-4 text-center p-4 ">
+                <img src="~/14091797581536925034-128.png" />
+                <p class="p-2">Możliwość czatu z użytkownikami portalu</p>
+            </div>
+            <div class="col-sm-4  col-lg-4 text-center p-4 ">
+                <img src="~/2209401921548234965-128.png" />
+                <p class="p-2">Automatyczne parowanie z innymi najmecami o podobnych cechach</p>
+            </div>
+        </div>
+        <div class="row my-5 p-5 text-color" style="background-color:#33BEFF; color:#FFFFFF;">
+            <div class="text-center p-4">
+                <p>
+                    100% zadowolonych użytkowników z naszego portalu. Rozpoczęcie użytkowania EFR jest bardzo proste. Wystarczy tylko darmowa rejestracja i od razu jest możliwość korzystania ze wszystkich możliwości portalu.
+                    Nasz regulamin oraz wszelkie informacje i instrukcje kożystania z portalu można przeczytać <a asp-area="" asp-controller="Home" asp-action="Privacy">tutaj</a>
+                </p>
+            </div>
+        </div>
+   
