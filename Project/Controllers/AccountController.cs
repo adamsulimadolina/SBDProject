@@ -128,6 +128,7 @@ namespace Project.Controllers
             if(this.HttpContext.Session.Get("UserID") != null)
             {
                 this.HttpContext.Session.Clear();
+                
             }
             return RedirectToAction("Index", "Home");
         }
