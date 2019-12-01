@@ -102,5 +102,15 @@ namespace Project.Controllers
                 return RedirectToAction("Login");
             }
         }
+
+        public ActionResult Logout()
+        {
+            if(this.HttpContext.Session.Get("UserID") != null)
+            {
+                this.HttpContext.Session.SetString("UserID", "");
+                this.HttpContext.Session.SetString("Username", "");
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

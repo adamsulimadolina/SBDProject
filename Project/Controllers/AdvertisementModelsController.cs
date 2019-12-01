@@ -247,6 +247,7 @@ namespace Project.Controllers
 
             var advertisementModel = await _context.Advertisements
                 .Include(a => a.Flat)
+                .Include(a => a.Flat.City)
                 .Include(a => a.Owner)
                 .FirstOrDefaultAsync(m => m.AdvertisementID == id);
             if (advertisementModel == null)
@@ -254,7 +255,7 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            return View(advertisementModel);
+            return RedirectToAction("Delete", "FlatModels", new { id = advertisementModel.FlatID });
         }
 
         // POST: AdvertisementModels/Delete/5
