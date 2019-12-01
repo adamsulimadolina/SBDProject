@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Project.Models.LogsModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MessageDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Log)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserR)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MessageDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Log)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserR.Login)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

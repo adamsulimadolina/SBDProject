@@ -23,7 +23,7 @@ namespace Project.Models
         public int LogID { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> MessageDate { get; set; }
 
         [MaxLength(50)]
