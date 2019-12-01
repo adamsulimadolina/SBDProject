@@ -24,8 +24,16 @@ namespace Project.Controllers
         // GET: PairsModels
         public async Task<IActionResult> Index()
         {
-            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika                             
+            var query1 = from tenant in _context.Tenants
+                         where tenant.UserID == int.Parse(id)
+                         select tenant;
+            if (query1.FirstOrDefault() == null)
+            {
+                return RedirectToAction("Create","TenantModels");
+            }
             var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
+           
             var pairsList = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika 
             var users = _context.User.Where(m => m.UserID != int.Parse(id)).ToList();
             var count = pairsList.Count;
