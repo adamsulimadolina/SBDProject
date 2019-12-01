@@ -21,7 +21,7 @@ namespace Project.Controllers
         private string _connectionString;
         DbContextOptionsBuilder<ProjectContext> _optionsBuilder;
         private Pusher pusher;
-        private UserModel SelectedUser = new UserModel();
+        private UserModel SelectedUser;
 
         public ChatController(IConfiguration configuration)
         {
@@ -29,7 +29,7 @@ namespace Project.Controllers
             _optionsBuilder = new DbContextOptionsBuilder<ProjectContext>();
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
             _optionsBuilder.UseSqlServer(_connectionString);
-           
+            SelectedUser = new UserModel();
             var options = new PusherOptions();
             options.Cluster = "eu";            
             pusher = new Pusher(
@@ -41,16 +41,16 @@ namespace Project.Controllers
         
         public ActionResult ChatFromPairs(int? id)
         {           
-            return RedirectToAction("Index", new { id = 2 });
+            return RedirectToAction("Index", new { select = 2 , userid = id });
         }
-        public ActionResult ChatFromAds()
+        public ActionResult ChatFromAds(int? id)
         {
-            return RedirectToAction("Index", new { id = 1 });
+            return RedirectToAction("Index", new { select = 1 , userid = id});
         }
       
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? select,int? userid)
         {
-            switch(id)
+            switch(select)
             {
                 case null:
                     ViewBag.selectedUser = new UserModel()
@@ -63,7 +63,7 @@ namespace Project.Controllers
                     using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
                     {
                         var query3 = from owner in db.Owners
-                                     where owner.OwnerID == id
+                                     where owner.OwnerID == userid
                                      select owner;
                         var Owner = query3.FirstOrDefault();
                         var query4 = from user in db.User
@@ -77,7 +77,7 @@ namespace Project.Controllers
                     {
 
                         var query1 = from tenant in db.Tenants
-                                     where tenant.TenantID == id
+                                     where tenant.TenantID == userid
                                      select tenant;
                         var najemca = query1.FirstOrDefault();
                         var query2 = from user in db.User
