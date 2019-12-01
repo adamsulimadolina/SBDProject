@@ -32,9 +32,16 @@ namespace Project.Controllers
             {
                 return RedirectToAction("Create","TenantModels");
             }
-            var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
+            var tenantLog = _context.Tenants
+                .Where(m => m.UserID == int.Parse(id))
+                .Include(m => m.User)
+                .Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
            
-            var pairsList = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika 
+            var pairsList = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika 
             var users = _context.User.Where(m => m.UserID != int.Parse(id)).ToList();
             var count = pairsList.Count;
             if (pairsList.Count < users.Count)
@@ -44,11 +51,14 @@ namespace Project.Controllers
             }
 
             await _context.SaveChangesAsync();
-            var pairsList2 = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika
+            var pairsList2 = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika
             List<PairsModel> pairs = new List<PairsModel>();
             foreach (var item in pairsList2)
             {
-
                 pairs.Add(item);
             }
             for (int i = 0; i < pairsList2.Count(); i++)

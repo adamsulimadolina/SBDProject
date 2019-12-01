@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Project.Models
 {   
@@ -21,12 +22,15 @@ namespace Project.Models
         [Key]
         public int UserID { get; set; }
         [Required(ErrorMessage = "Login is required. ")]
+        [DisplayName("Nazwa użytkownika")]
         public string Login { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
+        [DisplayName("Hasło")]
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Please confirm your password.")]
         [DataType(DataType.Password)]
+        [DisplayName("Powtórz hasło")]
         public string VerifyPassword { get; set; }
 
         public int getUserID()
