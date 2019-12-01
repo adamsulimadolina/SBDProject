@@ -16,8 +16,8 @@
     </div>   
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px; height:100%;">
-                <div class="main visible-md visible-lg">
+            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px; ">
+                <div class="main visible-md visible-lg "style="height:100%;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12">
                             <div class="panel panel-default users__bar">
@@ -179,6 +179,7 @@
 
             $('.chat__body').show();
             $('.__no__chat__').hide();
+            $('.panel-body').css('max-height','87%')
         }
         // select contact to chat with
         $('.user__item').click( function(e) {
