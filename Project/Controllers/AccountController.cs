@@ -106,7 +106,6 @@ namespace Project.Controllers
                 {
                     ModelState.AddModelError("", "Username or Password is wrong.");
                 }
-                
                 return RedirectToAction("Index", "Home");
             }
         }

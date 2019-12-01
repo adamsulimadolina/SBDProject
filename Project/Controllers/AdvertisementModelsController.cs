@@ -16,6 +16,7 @@ namespace Project.Controllers
         private readonly ProjectContext _context;
         private readonly List<string> adType = new List<string>(new string[] { "całe mieszkanie", "pojedynczy pokój" });
 
+
         public AdvertisementModelsController(ProjectContext context)
         {
             _context = context;
@@ -63,7 +64,6 @@ namespace Project.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-
         }
 
         // GET: AdvertisementModels/Details/5
@@ -94,7 +94,6 @@ namespace Project.Controllers
             ViewBag.RoomRent = roomModel.Rent;
             return View(advertisementModel);
         }
-
 
         // GET: AdvertisementModels/Create
         public IActionResult Create()
@@ -142,7 +141,6 @@ namespace Project.Controllers
                 {
                     if (flat.FlatID > tmp_id) tmp_id = flat.FlatID;
                 }
-
                 var this_flat = await _context.Flats
                     .FirstOrDefaultAsync(m => m.FlatID == tmp_id);
                     
@@ -214,6 +212,7 @@ namespace Project.Controllers
             advertisementModel.Flat = flatModel;
             advertisementModel = AdvertisementModel.setOwner(advertisementModel.OwnerID, advertisementModel, ownerModel);
             roomModel.Flat = flatModel;
+
             if (id != advertisementModel.AdvertisementID)
             {
                 return NotFound();
@@ -225,6 +224,7 @@ namespace Project.Controllers
                 {
                     _context.Update(flatModel);
                     _context.Update(roomModel);
+
                     _context.Update(advertisementModel);
                     await _context.SaveChangesAsync();
                 }

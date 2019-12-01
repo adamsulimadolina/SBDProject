@@ -161,6 +161,7 @@ sup {
 }
 
 a {
+<<<<<<< HEAD
     color: black;
     text-decoration: none;
     background-color: transparent;
@@ -170,6 +171,16 @@ a {
 
     a:hover {
         color: #D44343;
+=======
+    color: #D44343;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+    a:hover {
+        color: #A10000;
+>>>>>>> IzaNowy
         text-decoration: none;
     }
 
