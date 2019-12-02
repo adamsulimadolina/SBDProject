@@ -9,8 +9,7 @@ a.navbar-brand {
 .efr-nav{
     display:flex;
     float:left;
-    width:118px;
-    height:113px;
+    
 }
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -228,4 +227,3 @@ h2 {
 .chat-btn:disabled, .chat-btn:active, .chat-btn:visited, chat-btn:focus {
     color: #fff;
 }
-@media max-
