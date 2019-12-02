@@ -24,7 +24,11 @@
     <button onclick="topFunction()" id="top-btn" title="Go to top">Top</button>
     <header>
         <div class="containerr">
+            <div class="efr-nav">
+                <img src="~/efr.png" />
+            </div>
             <nav class="navv">
+                
                 <ul>
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index">EFR</a>
@@ -41,7 +45,7 @@
                         <li>
                             <a id="pairs" asp-area="" asp-controller="PairsModels" asp-action="Index">Twoje Dopasowania</a>
                         </li>
-                        
+
                         <li>
                             <a id="logout" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj Się</a>
                         </li>
