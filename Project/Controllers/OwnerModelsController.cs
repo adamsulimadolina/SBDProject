@@ -121,12 +121,12 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            var ownerModel = await _context.Owners.FindAsync(id);
+            var ownerModel = await _context.Owners
+                .FindAsync(id);
             if (ownerModel == null)
             {
                 return NotFound();
             }
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Login", ownerModel.UserID);
             return View(ownerModel);
         }
 
@@ -142,6 +142,7 @@ namespace Project.Controllers
                 return NotFound();
             }
 
+            ownerModel.User = _context.User.Find(ownerModel.UserID);
             if (ModelState.IsValid)
             {
                 try

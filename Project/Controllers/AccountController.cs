@@ -104,7 +104,8 @@ namespace Project.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Username or Password is wrong.");
+                    ModelState.AddModelError("", "Login lub hasło są niepoprawne.");
+                    return View(user);
                 }
                 return RedirectToAction("Index", "Home");
             }
@@ -162,5 +163,72 @@ namespace Project.Controllers
             ViewData["Tenant"] = tenant;
             return View(user);
         }
+
+        public IActionResult ChangePassword(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(int id, [Bind(Prefix = "Item1")] string old_password, 
+            [Bind(Prefix = "Item2")] string new_password, [Bind(Prefix = "Item3")] string new_password_repeat)
+        {
+            var user = await _context.User
+                .Where(m => m.UserID.Equals(id))
+                .FirstOrDefaultAsync();
+
+            if(!user.Password.Equals(old_password))
+            {
+                ViewBag.OldPass = "Obecne hasło jest niepoprawne.";
+                return View();
+            }
+            if(new_password != new_password_repeat)
+            {
+                ViewBag.NewPass = "Nowe hasło oraz jego powtórzenie muszą być takie same!";
+                return View();
+            }
+
+            user.Password = new_password;
+            user.VerifyPassword = new_password_repeat;
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details");
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userModel = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
+            if (userModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(userModel);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userModel = await _context.User.FindAsync(id);
+            _context.User.Remove(userModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Logout");
+        }
+
     }
 }
