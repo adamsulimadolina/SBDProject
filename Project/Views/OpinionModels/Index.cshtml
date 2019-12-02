@@ -5,33 +5,41 @@
 }
 
 
+    <div class="row justify-content-center my-5 ">
+        <div class="col-md-8 col-sm-10 my-5">
+            <div class="panel-minor py-2 text-center">
+                <h3>Opinie o Właścicielu</h3>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Treść Opinii
+                        </th>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Opinion)
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Opinion)
-            </td>
-          
-            @if(ViewBag.AbleToModify==item.UserID){
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.OpinionID">Edytuj</a> |
-                <a asp-action="Delete" asp-route-id="@item.OpinionID">Usuń</a>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Opinion)
+                            </td>
 
-            </td>
-            }
+                            @if (ViewBag.AbleToModify == item.UserID)
+                            {
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.OpinionID">Edytuj</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.OpinionID">Usuń</a>
 
-        </tr>
-}
-    </tbody>
-</table>
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </divclass="table>
+    </div>
