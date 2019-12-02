@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Details";
     var owner = (OwnerModel)ViewData["Owner"];
+    var tenant = (TenantModel)ViewData["Tenant"];
 }
 
 <h1>Konto @Model.Login</h1>
@@ -40,5 +41,21 @@
     </dl>
     <a asp-controller="OwnerModels" asp-action="Edit" asp-route-id="@owner.OwnerID">Edytuj dane właściciela</a>
     <br /><hr />
+    <h2>Dane właściciela</h2>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Imię najemcy
+        </dt>
+        <dd class="col-sm-10">
+            @tenant.Name
+        </dd>
+        <dt class="col-sm-2">
+            Nazwisko najemcy
+        </dt>
+        <dd class="col-sm-10">
+            @tenant.Surname
+        </dd>
+    </dl>
+    <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID">Edytuj dane najemcy</a>
 
 </div>

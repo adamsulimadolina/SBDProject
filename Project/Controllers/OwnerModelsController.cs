@@ -161,9 +161,8 @@ namespace Project.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Account");
             }
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "Login", ownerModel.UserID);
             return View(ownerModel);
         }
 

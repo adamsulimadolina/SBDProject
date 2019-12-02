@@ -32,7 +32,7 @@ namespace Project.Models
         [Range(18, 90)]
         [DisplayName("Wiek")]
         public int Age { get; set; }
-        [Required]
+
         [DisplayName("Palisz?")]
         public bool IsSmoking { get; set; }
         [DisplayName("Jesteś wege?")]

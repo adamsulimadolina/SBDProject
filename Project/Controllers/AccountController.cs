@@ -224,7 +224,26 @@ namespace Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            
+
             var userModel = await _context.User.FindAsync(id);
+
+            var pairsModel = _context.Pairs
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .Where(m => m.Tenant_1.UserID.Equals(id));
+            var pairsModel2 = _context.Pairs
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .Where(m => m.Tenant_2.UserID.Equals(id));
+            foreach(var pair in pairsModel)
+            {
+                _context.Pairs.Remove(pair);
+            }
+            foreach(var pair in pairsModel)
+            {
+                _context.Pairs.Remove(pair);
+            }
             _context.User.Remove(userModel);
             await _context.SaveChangesAsync();
             return RedirectToAction("Logout");
