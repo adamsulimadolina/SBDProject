@@ -1,0 +1,35 @@
+﻿@model UserModel
+
+
+@{
+    ViewData["Title"] = "Details";
+    var owner = (OwnerModel)ViewData["Owner"];
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FlatModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Login)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Login)
+        </dd>
+    </dl>
+    <h2>Dane właściciela</h2>
+    <dl class="row">
+        <dt class="col-sm-2">
+            <p>Imię  właściciela</p>
+        </dt>
+        <dd class="col-sm-10">
+            @owner.Name
+        </dd>
+
+    </dl>
+    <td>
+        <a asp-controller="OwnerModels" asp-action="Edit" asp-route-id="@owner.OwnerID">Edytuj dane właściciela</a>
+    </td>
+</div>
