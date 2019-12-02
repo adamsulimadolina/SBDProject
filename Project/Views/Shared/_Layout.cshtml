@@ -17,7 +17,7 @@
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
-    <link rel="stylesheet" href="~/css/app.css" />
+    <link rel="stylesheet" href="~/css/app.css" type="text/css"/>
 
 </head>
 <body>
@@ -25,14 +25,12 @@
     <header>
         <div class="containerr">
             <div class="efr-nav py-2">
-                <img src="~/efr.png" class="m-2"/>
+                <a asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/efr.png" class="m-2" />
+                </a>
             </div>
-            <nav class="navv">
-                
-                <ul>
-                    <li>
-                        <a asp-area="" asp-controller="Home" asp-action="Index">EFR</a>
-                    </li>
+            <nav class="navv navv-expand">               
+                <ul>                    
                     <li>
                         <a asp-area="" asp-controller="Chat" asp-action="index">chat</a>
                     </li>
@@ -62,6 +60,9 @@
                 </ul>
 
             </nav>
+            <div class="burger-icon" id="icon " onclick="rozwin()">
+                <img src="~/menu-button-of-three-horizontal-lines.png" />
+            </div>
         </div>
     </header>
     <div class="container">
@@ -122,7 +123,13 @@ function scrollFunction() {
 function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-}</script>
+   
+
+
+
+} function rozwin() {
+        
+    }</script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
