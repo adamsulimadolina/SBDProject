@@ -28,7 +28,6 @@ namespace Project.Models
 
         [Range(18, 90)]
         public int Age { get; set; }
-        [Required]
         public bool IsSmoking { get; set; }
         
         public bool IsVege { get; set; }
