@@ -207,12 +207,7 @@ namespace SBDProject.Controllers
 
         public async Task<IActionResult> Show()
         {
-
-
             return RedirectToAction("Index", "PairsModels");
-
-
-
         }
 
         private bool TenantModelExists(int id)

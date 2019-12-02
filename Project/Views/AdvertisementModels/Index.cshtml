@@ -37,7 +37,9 @@
                         <a asp-area="" asp-controller="Chat" asp-action="ChatFromAds" asp-route-id="@item.OwnerID">Wiadomość</a>
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a>
+                        <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a> |
+                        <a asp-controller="OpinionModels" asp-action="Create" asp-route-id="@item.OwnerID">Dodaj opinię</a> |
+                        <a asp-controller="OpinionModels" asp-action="Index" asp-route-id="@item.OwnerID">Zobacz opinie o właścicielu</a>
                     </td>
                 </tr>
             }
