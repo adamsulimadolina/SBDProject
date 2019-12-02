@@ -24,9 +24,24 @@ namespace Project.Controllers
         // GET: PairsModels
         public async Task<IActionResult> Index()
         {
-            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika
-            var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
-            var pairsList = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika 
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika                             
+            var query1 = from tenant in _context.Tenants
+                         where tenant.UserID == int.Parse(id)
+                         select tenant;
+            if (query1.FirstOrDefault() == null)
+            {
+                return RedirectToAction("Create","TenantModels");
+            }
+            var tenantLog = _context.Tenants
+                .Where(m => m.UserID == int.Parse(id))
+                .Include(m => m.User)
+                .Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
+           
+            var pairsList = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika 
             var users = _context.User.Where(m => m.UserID != int.Parse(id)).ToList();
             var count = pairsList.Count;
             if (pairsList.Count < users.Count)
@@ -36,11 +51,14 @@ namespace Project.Controllers
             }
 
             await _context.SaveChangesAsync();
-            var pairsList2 = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika
+            var pairsList2 = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika
             List<PairsModel> pairs = new List<PairsModel>();
             foreach (var item in pairsList2)
             {
-
                 pairs.Add(item);
             }
             for (int i = 0; i < pairsList2.Count(); i++)
@@ -111,11 +129,19 @@ namespace Project.Controllers
                 compatibility /= 4;
                 if (Tenant1 == 0)
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant2).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_2 = Tenant2;
                     pairsModel.TenantID_1 = item.TenantID;
                 }
                 else
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant1).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_1 = Tenant1;
                     pairsModel.TenantID_2 = item.TenantID;
                 }

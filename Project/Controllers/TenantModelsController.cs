@@ -113,7 +113,7 @@ namespace SBDProject.Controllers
                 _context.Add(tenantModel);
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "PairsModels");
             }
             TempData["ModelState"] = "You must fill in all of the fields";
             //ViewData["UserID"] = new SelectList(_context.Set<UserModel>(), "UserID", "UserID", tenantModel.UserID);
@@ -207,12 +207,7 @@ namespace SBDProject.Controllers
 
         public async Task<IActionResult> Show()
         {
-
-
             return RedirectToAction("Index", "PairsModels");
-
-
-
         }
 
         private bool TenantModelExists(int id)

@@ -4,54 +4,50 @@
     ViewData["Title"] = "Index";
 }
 
-    
-    <div class="row p-5">
-       
-        <table class=" table col-lg-8 mx-auto col-md-10  table-striped ">
-            <thead>
+<div class="row py-5 my-3 justify-content-center panel-minor">
+    <h2 class="">OGŁOSZENIA   WYNAJMU</h2>
+</div>
+
+<div class="row p-1">
+
+    <table class=" table col-lg-8 mx-auto col-md-10  table-striped ">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.AdvertisementType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelItem => modelItem.Flat.City.CityName)
+                </th>
+                <th>Czat</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>
-                        Typ Ogłoszenia
-                    </th>
-                    <th>
-                        Właściciel
-                    </th>
-                    <th>
-                        Mieszkanie
-                    </th>
-                    <th>Czat</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdvertisementType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Flat.City.CityName)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Chat" asp-action="ChatFromAds" asp-route-id="@item.OwnerID">Wiadomość</a>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.AdvertisementID">Szczegóły</a> |
+                        <a asp-controller="OpinionModels" asp-action="Create" asp-route-id="@item.OwnerID">Dodaj opinię</a> |
+                        <a asp-controller="OpinionModels" asp-action="Index" asp-route-id="@item.OwnerID">Zobacz opinie o właścicielu</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.AdvertisementType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Owner.OwnerID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Flat.FlatID)
-                        </td>
-                        <td>
-                            <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.OwnerID" >Wiadomość</a>
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.AdvertisementID">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.AdvertisementID">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.AdvertisementID">Delete</a> |
-                            <a asp-controller="OpinionModels" asp-action="Create" asp-route-id="@item.OwnerID">Add opinion</a> |
-                            <a asp-controller="OpinionModels" asp-action="Index" asp-route-id="@item.OwnerID">See all opinions</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="row p-5 justify-content-center">
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row p-5 justify-content-center ">
 
-        <a asp-action="Create" class="btn btn-info">Stwórz własne ogłoszenie</a>
-
-    </div>
+    <a asp-action="Create" class="btn btn-primary mx-5 my-2">Stwórz własne ogłoszenie</a>
+    <a asp-action="MyAds" class="btn btn-secondary mx-5 my-2">Moje Ogłoszenia</a>
+</div>

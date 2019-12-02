@@ -29,63 +29,76 @@ namespace Project.Controllers
             _optionsBuilder = new DbContextOptionsBuilder<ProjectContext>();
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
             _optionsBuilder.UseSqlServer(_connectionString);
+            SelectedUser = new UserModel();
             var options = new PusherOptions();
             options.Cluster = "eu";
-            
             pusher = new Pusher(
            "904061",
            "85b88ce58ddae993b77e",
            "db25103a35529ad79414", options);
         }
-       
-        
 
-      
-        public ActionResult Index(int? id)
+
+        public ActionResult ChatFromPairs(int? id)
         {
-            
-            if (this.HttpContext.Session.Get("UserID") == null)
-            {
-                return RedirectToAction("Login","Account");
-            }
+            return RedirectToAction("Index", new { select = 2, userid = id });
+        }
+        public ActionResult ChatFromAds(int? id)
+        {
+            return RedirectToAction("Index", new { select = 1, userid = id });
+        }
 
-            UserModel currentUser = new UserModel { UserID= Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
-            Login = this.HttpContext.Session.GetString("Username")
-        };
-            if (id != null)
+        public ActionResult Index(int? select, int? userid)
+        {
+            switch (select)
             {
-                using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
-                {
-                    
-                    var query1 = from tenant in db.Tenants
-                               where tenant.TenantID == id
-                               select tenant;
-                    var najemca = query1.FirstOrDefault();
-                    var query2 = from user in db.User
-                                 where user.UserID == najemca.UserID
-                                 select user;
-                    if(query2.FirstOrDefault()==null)
+                case null:
+                    ViewBag.selectedUser = new UserModel()
+                    {
+                        UserID = 0,
+                        Login = "0",
+                    };
+                    break;
+                case 1:
+                    using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
                     {
                         var query3 = from owner in db.Owners
-                                     where owner.OwnerID == id
+                                     where owner.OwnerID == userid
                                      select owner;
                         var Owner = query3.FirstOrDefault();
                         var query4 = from user in db.User
+                                     where user.UserID == Owner.UserID
+                                     select user;
+                        ViewBag.selectedUser = query4.FirstOrDefault();
+                    }
+                    break;
+                case 2:
+                    using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+                    {
+
+                        var query1 = from tenant in db.Tenants
+                                     where tenant.TenantID == userid
+                                     select tenant;
+                        var najemca = query1.FirstOrDefault();
+                        var query2 = from user in db.User
                                      where user.UserID == najemca.UserID
                                      select user;
-                        query2 = query4;
+
+                        ViewBag.selectedUser = query2.FirstOrDefault();
                     }
-                    ViewBag.selectedUser = query2.FirstOrDefault();
-                }
+                    break;
             }
-            else
+
+            if (this.HttpContext.Session.Get("UserID") == null)
             {
-                ViewBag.selectedUser = new UserModel
-                {
-                    UserID = 0,
-                    Login = "0",
-                };
+                return RedirectToAction("Login", "Account");
             }
+
+            UserModel currentUser = new UserModel
+            {
+                UserID = Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
+                Login = this.HttpContext.Session.GetString("Username")
+            };
 
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
@@ -97,7 +110,7 @@ namespace Project.Controllers
             ViewBag.currentUser = currentUser;
 
             return View();
-            
+
         }
         public JsonResult ConversationWithContact(int contact)
         {
@@ -106,8 +119,8 @@ namespace Project.Controllers
             {
                 return Json(new { status = "error", message = "User is not logged in" });
             }
-           
-                UserModel currentUser = new UserModel
+
+            UserModel currentUser = new UserModel
             {
                 UserID = Convert.ToInt32(this.HttpContext.Session.GetString("UserID")),
                 Login = this.HttpContext.Session.GetString("Username")
@@ -127,8 +140,8 @@ namespace Project.Controllers
             }
 
             return Json(
-                new { status = "success", data = conversations },sa
-                
+                new { status = "success", data = conversations }, sa
+
             );
         }
         [HttpPost]
@@ -147,15 +160,15 @@ namespace Project.Controllers
             };
 
             string socket_id = Request.Form["socket_id"];
-                    
-                MessagesModel convo = new MessagesModel
-                {
-                    UserSenderID = currentUser.UserID,
-                    Message = Request.Form["Message"],
-                    UserReceiverID = Convert.ToInt32(Request.Form["contact"])
-                };
-           
-       
+
+            MessagesModel convo = new MessagesModel
+            {
+                UserSenderID = currentUser.UserID,
+                Message = Request.Form["Message"],
+                UserReceiverID = Convert.ToInt32(Request.Form["contact"])
+            };
+
+
             convo.MessageDate = DateTime.Now;
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
@@ -174,28 +187,28 @@ namespace Project.Controllers
         }
         [HttpPost]
         //public JsonResult MessageDelivered(int message_id)
-      //  {
-           /* MessagesModel convo = null;
-            using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
-            {
-                convo = db.Messages.FirstOrDefault(c => c.id == message_id);
-                if (convo != null)
-                {
-                    convo.status = Conversation.messageStatus.Delivered;
-                    db.Entry(convo).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
-                }
+        //  {
+        /* MessagesModel convo = null;
+         using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
+         {
+             convo = db.Messages.FirstOrDefault(c => c.id == message_id);
+             if (convo != null)
+             {
+                 convo.status = Conversation.messageStatus.Delivered;
+                 db.Entry(convo).State = System.Data.Entity.EntityState.Modified;
+                 db.SaveChanges();
+             }
 
-            }
-            string socket_id = Request.Form["socket_id"];
-            var conversationChannel = getConvoChannel(convo.sender_id, convo.receiver_id);
-            pusher.TriggerAsync(
-              conversationChannel,
-              "message_delivered",
-              convo,
-              new TriggerOptions() { SocketId = socket_id });
-            return Json(convo);*/
-       // }
+         }
+         string socket_id = Request.Form["socket_id"];
+         var conversationChannel = getConvoChannel(convo.sender_id, convo.receiver_id);
+         pusher.TriggerAsync(
+           conversationChannel,
+           "message_delivered",
+           convo,
+           new TriggerOptions() { SocketId = socket_id });
+         return Json(convo);*/
+        // }
         private String getConvoChannel(int user_id, int contact_id)
         {
             if (user_id > contact_id)

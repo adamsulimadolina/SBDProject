@@ -4,45 +4,45 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="row py-5 my-3 justify-content-center panel-minor">
+    <h2 class="">Twoje Pary</h2>
+</div>
 
-    <div class="row">
-        <table class=" table col-lg-6 mx-auto col-md-10 my-5 table-striped ">
-            <thead class="">
-                <tr>
-                    <th>
-                        ID najemcy
-                    </th>
-                    <th>
-                        Procent dopasowania
-                    </th>
-                    <th>
-                       Wyślij Wiadomość
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    
+<div class="row">
+    <table class=" table col-lg-6 mx-auto col-md-10  table-striped ">
+        <thead class="">
+            <tr>
+                <th>
+                    Użytkownik
+                </th>
+
+                <th>
+                    Procent dopasowania
+                </th>
+                <th>
+                   Czat z Użytkownikiem
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TenantID_2)
+
+                        @Html.DisplayFor(modelItem => item.Tenant_2.Name)
+                        @Html.DisplayFor(modelItem => item.Tenant_2.Surname)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PairCompatibility)%
                     </td>
                     <td>
-                        <a href="/TenantModels/Details/@Html.DisplayFor(modelItem => item.TenantID_2)">Details</a>
-
-
-                    </td>
-                    <td>
-                        <a asp-area="" asp-controller="Chat" asp-action="index" asp-route-id="@item.TenantID_2">Wiadomość</a>
+                        <a asp-area="" asp-controller="Chat" asp-action="ChatFromPairs" asp-route-id="@item.TenantID_2">Wiadomość</a>
                     </td>
                 </tr>
-                    
+                
 
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+</div>

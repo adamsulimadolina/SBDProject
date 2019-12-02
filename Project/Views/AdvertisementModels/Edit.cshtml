@@ -1,8 +1,15 @@
-﻿@model Project.Models.AdvertisementModel
+﻿@model Tuple<Project.Models.AdvertisementModel, Project.Models.FlatModel, Project.Models.RoomModel>
 
 @{
     ViewData["Title"] = "Edit";
-}
+    FlatModel tmp_flat = (FlatModel) ViewData["Flat"];
+    AdvertisementModel tmp_adv = (AdvertisementModel)ViewData["Adv"];
+    RoomModel tmp_room = (RoomModel)ViewData["Room"];
+    bool bed = false, wardrobe= false, balcony= false;
+    if (tmp_room.Bed) { bed = true; }
+    if (tmp_room.Balcony) { balcony = true; }
+    if (tmp_room.Wardrobe) { wardrobe = true; }
+ }
 
 <div class="row py-3 my-3 justify-content-center panel-minor" >
     <h2>EDYCJA OGŁOSZENIA</h2>
@@ -10,22 +17,98 @@
 <div class="row justify-content-center py-3">
     <div class="col-md-4">
         <form asp-action="Edit">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AdvertisementID" />
+            <input type="hidden" asp-for="Item1.AdvertisementID" value="@tmp_adv.AdvertisementID" />
+            <input type="hidden" asp-for="Item1.FlatID" value="@tmp_adv.FlatID" />
+            <input type="hidden" asp-for="Item1.OwnerID" value="@tmp_adv.OwnerID" />
+            <input type="hidden" asp-for="Item2.FlatID" value="@tmp_flat.FlatID" />
+            <input type="hidden" asp-for="Item2.CityID" value="@tmp_flat.CityID" />
+            <input type="hidden" asp-for="Item3.RoomID" value="@tmp_room.RoomID" />
+            <input type="hidden" asp-for="Item3.FlatID" value="@tmp_room.FlatID" />
+
+            <h2>Ogłoszenie</h2>
             <div class="form-group">
-                <label  class="control-label">Typ Ogłoszenia</label>
-                <input asp-for="AdvertisementType" class="form-control" />
-                <span asp-validation-for="AdvertisementType" class="text-danger"></span>
+                <label class="control-label">Typ Ogłoszenia</label>
+                <select asp-for="Item1.AdvertisementType" class="form-control" asp-items="ViewBag.AdType"></select>
+                <span asp-validation-for="Item1.AdvertisementType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OwnerID" class="control-label"></label>
-                <select asp-for="OwnerID" class="form-control" asp-items="ViewBag.OwnerID"></select>
-                <span asp-validation-for="OwnerID" class="text-danger"></span>
+                <label class="control-label">City</label>
+                <select class="form-control" asp-items="ViewBag.CityName" name="city"></select>
+            </div>
+            <h2>Mieszkanie</h2>
+            <div class="form-group">
+                <label asp-for="Item2.RoomsCount" class="control-label"></label>
+                <input asp-for="Item2.RoomsCount" class="form-control" value="@tmp_flat.RoomsCount" />
+                <span asp-validation-for="Item2.RoomsCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FlatID" class="control-label"></label>
-                <select asp-for="FlatID" class="form-control" asp-items="ViewBag.FlatID"></select>
-                <span asp-validation-for="FlatID" class="text-danger"></span>
+                <label asp-for="Item2.BathroomCount" class="control-label"></label>
+                <input asp-for="Item2.BathroomCount" class="form-control" value="@tmp_flat.BathroomCount" />
+                <span asp-validation-for="Item2.BathroomCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item2.Surface" class="control-label"></label>
+                <input asp-for="Item2.Surface" class="form-control" value="@tmp_flat.Surface" />
+                <span asp-validation-for="Item2.Surface" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item2.KitchenType" class="control-label"></label>
+                <input asp-for="Item2.KitchenType" class="form-control" value="@tmp_flat.KitchenType" />
+                <span asp-validation-for="Item2.KitchenType" class="text-danger"></span>
+            </div>
+            <h2>Pokój</h2>
+            <div class="form-group">
+                <label asp-for="Item3.Surface" class="control-label"></label>
+                <input asp-for="Item3.Surface" class="form-control" value="@tmp_room.Surface" />
+                <span asp-validation-for="Item3.Surface" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    @if (balcony)
+                    {
+                        <input class="form-check-input" asp-for="Item3.Balcony" checked /> @Html.DisplayNameFor(model => model.Item3.Balcony)
+                    }
+                    else
+                    {
+                        <input class="form-check-input" asp-for="Item3.Balcony" /> @Html.DisplayNameFor(model => model.Item3.Balcony)
+                    }
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    @if (bed)
+                    {
+                        <input class="form-check-input" asp-for="Item3.Bed" checked /> @Html.DisplayNameFor(model => model.Item3.Bed)
+                    }
+                    else
+                    {
+                        <input class="form-check-input" asp-for="Item3.Bed" /> @Html.DisplayNameFor(model => model.Item3.Bed)
+                    }
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    @if (wardrobe)
+                    {
+                        <input class="form-check-input" asp-for="Item3.Wardrobe" checked /> @Html.DisplayNameFor(model => model.Item3.Wardrobe)
+                    }
+                    else
+                    {
+                        <input class="form-check-input" asp-for="Item3.Wardrobe" /> @Html.DisplayNameFor(model => model.Item3.Wardrobe)
+                    }
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item3.AdditionalInfo" class="control-label"></label>
+                <input asp-for="Item3.AdditionalInfo" class="form-control" value="@tmp_room.AdditionalInfo" />
+                <span asp-validation-for="Item3.AdditionalInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item3.Rent" class="control-label"></label>
+                <input asp-for="Item3.Rent" class="form-control" value="@tmp_room.Rent" />
+                <span asp-validation-for="Item3.Rent" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-success" />
