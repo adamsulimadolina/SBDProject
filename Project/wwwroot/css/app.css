@@ -6,7 +6,11 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
+.efr-nav{
+    display:flex;
+    float:left;
+    
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -126,8 +130,8 @@ header {
 
     .navv li {
         display: inline-block;
-        margin-left: 30px;
-        margin-right:30px;
+        margin-left: 15px;
+        margin-right:15px;
         padding-top: 13px;
         position: relative;
     }

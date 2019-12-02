@@ -102,7 +102,9 @@ namespace Project.Controllers
 
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
-
+                var users = db.User.Where(u => u.UserID != currentUser.UserID).ToList();
+                var tenants = db.Tenants.Where(m => m.UserID != currentUser.UserID).ToList();
+                
                 ViewBag.allUsers = db.User.Where(u => u.UserID != currentUser.UserID)
                                  .ToList();
             }
