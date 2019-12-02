@@ -32,12 +32,13 @@
 
                                         @foreach (var user in @ViewBag.allUsers)
                                         {
-                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Login">
+                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Name" data-contact-surname="@user.Surname">
                                                 <li>
                                                     <div class="avatar">
                                                         <img src="~/no_avatar.png" height="50" width="50">
                                                     </div>
-                                                    <span>@user.Login</span>
+                                                    <span>@user.Name</span>
+                                                    <span>@user.Surname</span>
                                                     <div class="status-bar"></div>
                                                 </li>
                                             </a>
@@ -187,7 +188,7 @@
 
             currentContact = {
                 id: $(this).data('contact-id'),
-                name: $(this).data('contact-name'),
+                
             };
             console.log(currentContact);
             if ( conversationChannelName ) {
@@ -260,7 +261,8 @@
 
                 currentContact = {
                     id: @ViewBag.selectedUser.UserID,
-                    name: "@ViewBag.selectedUser.Login",
+                  
+                   
                 };
 
                 if (conversationChannelName) {
