@@ -131,5 +131,37 @@ namespace Project.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> Details()
+        {
+            var id = this.HttpContext.Session.GetString("UserID");
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User
+                .Where(m => m.UserID == int.Parse(id))
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owners
+                .Where(m => m.UserID.Equals(user.UserID))
+                .FirstOrDefaultAsync();
+
+            var tenant = await _context.Tenants
+                .Where(m => m.UserID.Equals(user.UserID))
+                .FirstOrDefaultAsync();
+
+            if (owner == null) owner = new OwnerModel();
+            if (tenant == null) tenant = new TenantModel();
+            ViewData["Owner"] = owner;
+            ViewData["Tenant"] = tenant;
+            return View(user);
+        }
+
     }
 }
