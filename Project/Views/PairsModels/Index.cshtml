@@ -22,24 +22,30 @@
                 <th>
                    Czat z Użytkownikiem
                 </th>
+                <th>
+                    Szczegóły użytkownika
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
+            <tr>
+                <td>
 
-                        @Html.DisplayFor(modelItem => item.Tenant_2.Name)
-                        @Html.DisplayFor(modelItem => item.Tenant_2.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PairCompatibility)%
-                    </td>
-                    <td>
-                        <a asp-area="" asp-controller="Chat" asp-action="ChatFromPairs" asp-route-id="@item.TenantID_2">Wiadomość</a>
-                    </td>
-                </tr>
+                    @Html.DisplayFor(modelItem => item.Tenant_2.Name)
+                    @Html.DisplayFor(modelItem => item.Tenant_2.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PairCompatibility)%
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Chat" asp-action="ChatFromPairs" asp-route-id="@item.TenantID_2">Wiadomość</a>
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="TenantModels" asp-action="Details" asp-route-id="@item.TenantID_2">Szczegóły</a>
+                </td>
+            </tr>
                 
 
             }

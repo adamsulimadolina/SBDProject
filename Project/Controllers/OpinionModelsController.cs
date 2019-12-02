@@ -23,29 +23,13 @@ namespace Project.Controllers
         // GET: OpinionModels
         public async Task<IActionResult> Index(int? id)
         {
-            
+
+            ViewBag.AbletoModify = int.Parse(this.HttpContext.Session.GetString("UserID"));
             var opinionList = _context.Opinions.Where(m => m.OwnerID == id).ToList();
             return View(opinionList);
         }
 
-        // GET: OpinionModels/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var opinionModel = await _context.Opinions
-                .Include(o => o.Owner)
-                .FirstOrDefaultAsync(m => m.OpinionID == id);
-            if (opinionModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(opinionModel);
-        }
+      
       
 
         //zmi
@@ -66,13 +50,14 @@ namespace Project.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 opinionModel.OwnerID = id;
 
                 var idLog = this.HttpContext.Session.GetString("UserID");
                 opinionModel.UserID = int.Parse(idLog);
                 _context.Add(opinionModel);
                 await _context.SaveChangesAsync();
-                ViewBag.AbleToModify = true;
+
                 return RedirectToAction("Index", "AdvertisementModels");
             }
            // ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", opinionModel.OwnerID);
