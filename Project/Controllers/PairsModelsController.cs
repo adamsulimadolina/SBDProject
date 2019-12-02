@@ -129,11 +129,19 @@ namespace Project.Controllers
                 compatibility /= 4;
                 if (Tenant1 == 0)
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant2).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_2 = Tenant2;
                     pairsModel.TenantID_1 = item.TenantID;
                 }
                 else
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant1).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_1 = Tenant1;
                     pairsModel.TenantID_2 = item.TenantID;
                 }

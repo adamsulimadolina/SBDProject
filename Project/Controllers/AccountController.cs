@@ -162,6 +162,5 @@ namespace Project.Controllers
             ViewData["Tenant"] = tenant;
             return View(user);
         }
-
     }
 }

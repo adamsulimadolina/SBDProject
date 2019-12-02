@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -26,11 +23,10 @@
                 @Html.DisplayFor(modelItem => item.Opinion)
             </td>
           
-            @if(ViewBag.AbleToModify==true){
+            @if(ViewBag.AbleToModify==item.UserID){
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OpinionID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OpinionID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OpinionID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.OpinionID">Edytuj</a> |
+                <a asp-action="Delete" asp-route-id="@item.OpinionID">Usuń</a>
 
             </td>
             }
