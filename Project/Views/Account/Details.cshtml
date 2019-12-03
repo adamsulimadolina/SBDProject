@@ -62,7 +62,9 @@
                 @tenant.Surname
             </dd>
         </dl>
-        <div class="text-center">
-            <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary mx-auto">Edytuj dane najemcy</a>
+        <div class="text-center ">
+            <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary">Edytuj dane najemcy</a> |
+            <a asp-controller="TenantModels" asp-action="Details" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary ">Zobacz Szczegóły</a>
         </div>
+    </div>
 </div>
