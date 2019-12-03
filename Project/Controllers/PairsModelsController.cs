@@ -87,23 +87,23 @@ namespace Project.Controllers
             var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).ToList();
             var pairsList = _context.Pairs.ToList();
 
-            foreach(var item in pairsList)
+            foreach (var item in pairsList)
             {
-                if (item.TenantID_1 == tenantLog[0].TenantID )
+                if (item.TenantID_1 == tenantLog[0].TenantID)
                 {
                     var tenant = _context.Tenants.Where(m => m.TenantID == item.TenantID_2).ToList();
-                    var cal= calculateCompatibility(tenant[0]);
-                     item.PairCompatibility = cal;
+                    var cal = calculateCompatibility(tenant[0]);
+                    item.PairCompatibility = cal;
                 }
-               
-                else if(item.TenantID_2 == tenantLog[0].TenantID)
+
+                else if (item.TenantID_2 == tenantLog[0].TenantID)
                 {
                     var tenant = _context.Tenants.Where(m => m.TenantID == item.TenantID_1).ToList();
                     item.PairCompatibility = calculateCompatibility(tenant[0]);
                 }
                 _context.Update(item);
             }
-            
+
         }
 
         public float calculateCompatibility(TenantModel item)

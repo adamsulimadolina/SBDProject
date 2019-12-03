@@ -78,6 +78,7 @@ namespace Project.Controllers
             {
                 return NotFound();
             }
+            ViewData["OwnerID"] = new SelectList(_context.Owners, "OwnerID", "OwnerID", opinionModel.OwnerID);
           
             return View(opinionModel);
         }

@@ -156,19 +156,9 @@ namespace Project.Controllers
             var tenant = await _context.Tenants
                 .Where(m => m.UserID.Equals(user.UserID))
                 .FirstOrDefaultAsync();
-            ViewBag.OwnerNull = false;
-            ViewBag.TenantNull = false;
-            if (owner == null)
-            {
-                owner = new OwnerModel();
-                ViewBag.OwnerNull = true;
-            }
 
-            if (tenant == null)
-            {
-                tenant = new TenantModel();
-                ViewBag.TenantNull = true;
-            }
+            if (owner == null) owner = new OwnerModel();
+            if (tenant == null) tenant = new TenantModel();
             ViewData["Owner"] = owner;
             ViewData["Tenant"] = tenant;
             return View(user);

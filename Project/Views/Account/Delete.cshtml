@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
 }
 
-<div class="row col-md-6 col-sm-10 mx-auto py-5 justify-content-center">
+<div class="row col-md-6 col-sm-10 col-lg-5 mx-auto py-5 justify-content-center">
     <div class="row text-center my-2">
         <h2>Czy jesteś pewien że chcesz usunąć konto?</h2>
     </div>
@@ -12,7 +12,7 @@
         <form asp-action="Delete">
             <input type="hidden" asp-for="UserID" />
             <input type="submit" value="DELETE" class="btn btn-danger font-weight-bold" /> |
-            <a asp-action="Details">Powrót</a>
+            <a asp-action="Index">Powrót</a>
         </form>
     </div>
 </div>
