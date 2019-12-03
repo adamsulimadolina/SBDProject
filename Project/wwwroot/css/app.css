@@ -74,8 +74,8 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 30px;
+    /* Margin bottom by footer height */
+    margin-bottom: 30px;
 }
 .footer {
     position: absolute;
@@ -193,7 +193,7 @@ text-color-create {
 }
 .panel {
     background-color: #33BEFF;
-    
+    line-height:2rem;    
     color: #FFFFFF;
 }
 .panel-child{
