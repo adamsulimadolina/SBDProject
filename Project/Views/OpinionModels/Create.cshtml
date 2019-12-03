@@ -12,16 +12,16 @@
             <h3 class="">Dodaj swoją opinię</h3>
         </div>
         <div class="">
-            <form asp-action="Create">
+            <form asp-action="Create" >
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label class="control-label"></label>
-                    <textarea asp-for="Opinion" class="form-control" rows="4" placeholder="Napisz swoją opinię..."></textarea>
+                    <textarea asp-for="Opinion" class="form-control box-shadow" rows="4" placeholder="Napisz swoją opinię..."></textarea>
                     <span asp-validation-for="Opinion" class="text-danger"></span>
                 </div>
 
 
-                <div class="form-group">
+                <div class="form-group my-4">
                     <input type="submit" value="Prześlij" class="btn btn-primary" />
                 </div>
             </form>
