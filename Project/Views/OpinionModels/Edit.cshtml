@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8 col-sm-12 my-5 mx-auto">
-        <div class="text-center panel-minor ">
-            <h3 class="">Dodaj swoją opinię</h3>
+    <div class="row mt-5 px-3 text-center pt-4">
+        <div class="col-lg-7 col-md-19 align-self-center mx-auto text-color-create">
+            <p class="panel-minor-small">Edytuj swoją opinię</p>
         </div>
+    </div>
+<div class="row mb-5 ">
+    <div class="col-lg-6 col-md-8 col-sm-10 align-self-center mx-auto text-color-create p-3 ">
+        
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="OpinionID" />
