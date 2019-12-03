@@ -6,7 +6,32 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
-
+.efr-nav{
+    display:flex;
+    float:left;
+    
+}
+.burger-icon{
+    display:none;
+}
+@media (max-width: 992px)
+{
+    .navv li a{
+        display:none;
+    }
+    .burger-icon{
+        padding:5px;
+        display:block;
+        float:right;    
+    }
+   
+    
+    
+}
+.word-wrapper td,dd{
+    word-wrap: break-word;
+    max-width: 300px;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -33,7 +58,7 @@ html {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0px 0px 1em 0.3em rgba(0, 0, 0, .2);
 }
 
 button.accept-policy {
@@ -49,8 +74,8 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 30px;
+    /* Margin bottom by footer height */
+    margin-bottom: 30px;
 }
 .footer {
     position: absolute;
@@ -115,6 +140,7 @@ header {
 .navv {
     justify-content:center;
     display:inline-flex;
+    
 }
 
     .navv ul {
@@ -167,7 +193,7 @@ text-color-create {
 }
 .panel {
     background-color: #33BEFF;
-    
+    line-height:2rem;    
     color: #FFFFFF;
 }
 .panel-child{
@@ -181,6 +207,15 @@ text-color-create {
     text-transform: uppercase;
     font-family: 'Montserrat', sans-serif;
     font-weight:700;
+}
+.panel-minor-small {
+    text-align: center;
+    color: #000000;
+    letter-spacing: .3em;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
 }
 h2 {
     font-weight: 700;

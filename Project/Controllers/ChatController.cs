@@ -102,9 +102,52 @@ namespace Project.Controllers
 
             using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
             {
-
-                ViewBag.allUsers = db.User.Where(u => u.UserID != currentUser.UserID)
-                                 .ToList();
+                var users = db.User.Where(u => u.UserID != currentUser.UserID).ToList();
+                var tenants = db.Tenants.Where(m => m.UserID != currentUser.UserID).Include(m=>m.User).ToList();
+                var owners = db.Owners.Where(m => m.UserID != currentUser.UserID).Include(m => m.User).ToList();
+                //Tuple<string, string> names = new Tuple<string, string>();
+                List<TenantModel> names = new List<TenantModel>();
+                
+                foreach(var item in users)
+                {
+                    foreach(var item1 in tenants)
+                    {
+                        if(item1.UserID==item.UserID)
+                        {
+                            names.Add(new TenantModel()
+                            {
+                                Name = item1.Name,
+                                Surname = item1.Surname,
+                                UserID = item1.UserID,
+                                User = item1.User,
+                            }) ; 
+                                                      
+                        }
+                    }
+                                 
+                }
+                foreach(var item in names)
+                {
+                    users.Remove(item.User);
+                }
+                foreach(var item in users)
+                {
+                    foreach(var item1 in owners)
+                    {
+                        if(item1.UserID==item.UserID)
+                        {
+                            names.Add(new TenantModel()
+                            {
+                                Name = item1.Name,
+                                Surname = item1.Surname,
+                                UserID = item1.UserID,
+                                User = item1.User,
+                            });
+                           
+                        }
+                    }
+                }
+                ViewBag.allUsers = names;
             }
 
             ViewBag.currentUser = currentUser;

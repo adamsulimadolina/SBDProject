@@ -27,7 +27,6 @@ namespace Project.Models
         public int OwnerID { get; set; }
 
         [ForeignKey("UserID")]
-        
         public int UserID { get; set; }
        
         public virtual OwnerModel Owner { get; set; }

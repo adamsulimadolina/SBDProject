@@ -14,12 +14,12 @@
             </div>
         </nav>
     </div>   
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-md-3 col-sm-3" style="font-size:14px; ">
-                <div class="main visible-md visible-lg "style="height:100%;">
+    <div class="row">
+        <div class="container">
+            <div class="col-sm-12 col-md-3 " style="font-size:14px; ">
+                <div class="main visible-md visible-lg visible-sm"style="height:100%;">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12">
+                        <div class="col-sm-12">
                             <div class="panel panel-default users__bar">
                                 <div class="panel-heading users__heading">
                                     Contacts (@ViewBag.allUsers.Count)
@@ -32,12 +32,13 @@
 
                                         @foreach (var user in @ViewBag.allUsers)
                                         {
-                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Login">
+                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Name" data-contact-surname="@user.Surname">
                                                 <li>
                                                     <div class="avatar">
                                                         <img src="~/no_avatar.png" height="50" width="50">
                                                     </div>
-                                                    <span>@user.Login</span>
+                                                    <span>@user.Name</span>
+                                                    <span>@user.Surname</span>
                                                     <div class="status-bar"></div>
                                                 </li>
                                             </a>
@@ -49,10 +50,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-9 col-md-9 chat__body">
+            <div class="col-sm-12 col-md-9 chat__body">
                 <div class="row" style="height:65vh;">
 
-                    <div class="col-xs-12" style="overflow:auto;max-height:58vh;">
+                    <div class="col-sm-12" style="overflow:auto;max-height:58vh;">
                         <ul class="list-group chat__main">
                         </ul>
                     </div>
@@ -187,7 +188,7 @@
 
             currentContact = {
                 id: $(this).data('contact-id'),
-                name: $(this).data('contact-name'),
+                
             };
             console.log(currentContact);
             if ( conversationChannelName ) {
@@ -260,7 +261,8 @@
 
                 currentContact = {
                     id: @ViewBag.selectedUser.UserID,
-                    name: "@ViewBag.selectedUser.Login",
+                  
+                   
                 };
 
                 if (conversationChannelName) {

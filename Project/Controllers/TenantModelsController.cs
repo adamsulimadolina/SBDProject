@@ -153,6 +153,7 @@ namespace SBDProject.Controllers
                 return NotFound();
             }
 
+            tenantModel.User = _context.User.Find(tenantModel.UserID);
             if (ModelState.IsValid)
             {
                 try
@@ -172,7 +173,7 @@ namespace SBDProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", new { id = tenantModel.TenantID });
+                return RedirectToAction("Details", "Account");
             }
             //   ViewData["UserID"] = new SelectList(_context.Set<UserModel>(), "UserID", "UserID", tenantModel.UserID);
             return View(tenantModel);
