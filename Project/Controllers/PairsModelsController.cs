@@ -24,7 +24,11 @@ namespace Project.Controllers
         // GET: PairsModels
         public async Task<IActionResult> Index()
         {
-            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika                             
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika       
+            if(id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var query1 = from tenant in _context.Tenants
                          where tenant.UserID == int.Parse(id)
                          select tenant;
