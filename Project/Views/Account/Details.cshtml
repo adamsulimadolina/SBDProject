@@ -46,7 +46,7 @@
             <a asp-controller="OwnerModels" asp-action="Edit" asp-route-id="@owner.OwnerID" class="btn btn-outline-primary">Edytuj dane właściciela</a>
         </div>
     </div>
-    <div class="col-md-5 col-sm-9 box-shadow p-3 row mx-auto my-4">
+    <div class="col-md-5 col-sm-9 box-shadow p-3 my-4 ">
         <h2>Dane właściciela</h2>
         <dl class="row">
             <dt class="col-sm-4">
@@ -62,7 +62,7 @@
                 @tenant.Surname
             </dd>
         </dl>
-        
-        <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary mx-auto">Edytuj dane najemcy</a>
-   </div>
+        <div class="text-center">
+            <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary mx-auto">Edytuj dane najemcy</a>
+        </div>
 </div>

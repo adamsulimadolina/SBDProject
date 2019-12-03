@@ -4,12 +4,14 @@
     ViewData["Title"] = "Edit";
 }
 
-    <div class="row panel-minor">
-        <h3>Edytuj Dane Właściciela</h3>
+    <div class="row mt-5 px-3 text-center">
+        <div class="col-lg-6 col-md-8 align-self-center mx-auto">
+            <p class="panel-minor-small">Edytuj Dane Właściciela</p>
+        </div>
     </div>
-<div class="row">
+<div class="row mb-5 mt-4 ">
     
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6 align-self-center mx-auto text-color-create p-3 box-shadow">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="OwnerID" />

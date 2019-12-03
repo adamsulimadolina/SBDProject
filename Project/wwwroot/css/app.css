@@ -208,6 +208,15 @@ text-color-create {
     font-family: 'Montserrat', sans-serif;
     font-weight:700;
 }
+.panel-minor-small {
+    text-align: center;
+    color: #000000;
+    letter-spacing: .3em;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
 h2 {
     font-weight: 700;
 }
