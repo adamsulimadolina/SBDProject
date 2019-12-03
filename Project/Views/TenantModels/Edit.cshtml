@@ -3,13 +3,22 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="row mt-5 px-3 text-center">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+    <div class="col-lg-4 col-md-6 align-self-center mx-auto text-color-create">
+        <p class="panel-minor-small">
+            Edytuj Swoje Dane
+        </p>
+    </div>
+</div>
+<div class="row mb-5 mt-4 ">
+    <div class="col-lg-3 col-md-6 align-self-center mx-auto text-color-create p-3 box-shadow">
+
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TenantID" />
+            <input type="hidden" asp-for="UserID" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -48,10 +57,12 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="p-3">
+    <a asp-action="Index">Powrót</a>
 </div>
+
+
 

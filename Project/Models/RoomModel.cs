@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Project.Models
 {
@@ -21,22 +22,27 @@ namespace Project.Models
         [Key]
         public int RoomID { get; set; }
         [Required]
+        [DisplayName("Powierzchnia całkowita")]
         public double Surface {get;set;}
-
+        [DisplayName("Balkon")]
         public bool Balcony { get; set; }
-
+        [DisplayName("Łóżko")]
         public bool Bed { get; set; }
-
+        [DisplayName("Szafa")]
         public bool Wardrobe { get; set; }
         [MaxLength(40)]
+        [DisplayName("Dodatkowe informacje")]
         public string AdditionalInfo { get; set; }
         [Required]
+        [DisplayName("Cena")]
         public double Rent { get; set; }
 
         [ForeignKey("FlatID")]
         public int FlatID { get; set; }
 
         public virtual FlatModel Flat { get; set; }
+
+        
 
     }
 }

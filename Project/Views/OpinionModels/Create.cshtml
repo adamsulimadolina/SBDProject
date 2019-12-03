@@ -1,0 +1,39 @@
+﻿@model Project.Models.OpinionModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<div class="row justify-content-center mt-5">
+    <div  class="col-md-8 col-sm-12 my-5 mx-auto">
+        <div class="text-center panel-minor ">
+            <h3 class="">Dodaj swoją opinię</h3>
+        </div>
+        <div class="">
+            <form asp-action="Create" >
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label"></label>
+                    <textarea asp-for="Opinion" class="form-control box-shadow" rows="4" placeholder="Napisz swoją opinię..."></textarea>
+                    <span asp-validation-for="Opinion" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group my-4">
+                    <input type="submit" value="Prześlij" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="AdvertisementModels">Powrót</a>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

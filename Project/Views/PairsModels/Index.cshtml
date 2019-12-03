@@ -1,44 +1,51 @@
 ﻿@model IEnumerable<Project.Models.PairsModel>
 
+@{
+    ViewData["Title"] = "Index";
+}
 
+<div class="row py-5 my-3 justify-content-center panel-minor">
+    <h2 class="">Twoje Pary</h2>
+</div>
 
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tenant ID
-            </th>
-            <th>
-                Compatibility
-            </th>
-
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="row">
+    <table class=" table col-lg-6 mx-auto col-md-10  table-striped box-shadow">
+        <thead class="">
+            <tr>
+                <th>
+                    Użytkownik
+                </th>
+                <th>
+                    Procent dopasowania
+                </th>
+                <th>
+                   Czat z Użytkownikiem
+                </th>
+                <th>
+                    Szczegóły użytkownika
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TenantID_2)
+                    @Html.DisplayFor(modelItem => item.Tenant_2.Name)
+                    @Html.DisplayFor(modelItem => item.Tenant_2.Surname)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PairCompatibility)%
                 </td>
-
-
                 <td>
-                    <a href="/TenantModels/Details/@Html.DisplayFor(modelItem => item.TenantID_2)">Details</a>
-                    
-
+                    <a asp-area="" asp-controller="Chat" asp-action="ChatFromPairs" asp-route-id="@item.TenantID_2">Wiadomość</a>
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="TenantModels" asp-action="Details" asp-route-id="@item.TenantID_2">Szczegóły</a>
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <a asp-action="Back">Back to List</a>
+
+            }
+        </tbody>
+    </table>
 </div>

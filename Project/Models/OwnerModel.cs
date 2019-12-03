@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Project.Models
 {
@@ -21,8 +22,10 @@ namespace Project.Models
         [Key]
         public int OwnerID { get; set; }
         [MaxLength(20)]
+        [DisplayName("Imię właściciela")]
         public string Name { get; set; }
         [MaxLength(30)]
+        [DisplayName("Nazwisko właściciela")]
         public string Surname { get; set; }
 
         [ForeignKey("UserID")]

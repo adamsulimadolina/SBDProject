@@ -3,27 +3,23 @@
 <head>
     <title>pChat &mdash; Private Chatroom</title>
     <link rel="stylesheet" href="@Url.Content("~/css/StyleSheet.css")">
-
+    <link rel="stylesheet" href="@Url.Content("~/css/app.css")">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
+
+    <div class="containerr-child my-4 border-bottom">
+        <nav class="navv">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">pChat - @ViewBag.currentUser.Login </a>
+                <p class="" style="font-size:large">Wiadomości - @ViewBag.currentUser.Login </p>
             </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Log Out</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!-- / Navigation Bar -->
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-md-3">
-                <aside class="main visible-md visible-lg">
+        </nav>
+    </div>   
+    <div class="row">
+        <div class="container">
+            <div class="col-sm-12 col-md-3 " style="font-size:14px; ">
+                <div class="main visible-md visible-lg visible-sm"style="height:100%;">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-sm-12">
                             <div class="panel panel-default users__bar">
                                 <div class="panel-heading users__heading">
                                     Contacts (@ViewBag.allUsers.Count)
@@ -31,17 +27,18 @@
                                 <div class="__no__chat__">
                                     <p>Select a contact to chat with</p>
                                 </div>
-                                <div class="panel-body users__body">
+                                <div class="panel-body users__body" style="max-height:80%; overflow:auto;">
                                     <ul id="contacts" class="list-group">
 
                                         @foreach (var user in @ViewBag.allUsers)
                                         {
-                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Login">
+                                            <a class="user__item contact-@user.UserID" href="#" data-contact-id="@user.UserID" data-contact-name="@user.Name" data-contact-surname="@user.Surname">
                                                 <li>
                                                     <div class="avatar">
                                                         <img src="~/no_avatar.png" height="50" width="50">
                                                     </div>
-                                                    <span>@user.Login</span>
+                                                    <span>@user.Name</span>
+                                                    <span>@user.Surname</span>
                                                     <div class="status-bar"></div>
                                                 </li>
                                             </a>
@@ -51,20 +48,20 @@
                             </div>
                         </div>
                     </div>
-                </aside>
-
-
+                </div>
             </div>
-            <div class="col-xs-12 col-md-9 chat__body">
-                <div class="row">
-                    <div class="col-xs-12" style="overflow:scroll">
+            <div class="col-sm-12 col-md-9 chat__body">
+                <div class="row" style="height:65vh;">
+
+                    <div class="col-sm-12" style="overflow:auto;max-height:58vh;">
                         <ul class="list-group chat__main">
                         </ul>
                     </div>
+
                     <div class="chat__type__body">
                         <div class="chat__type">
                             <textarea id="msg_box" placeholder="Type your message"></textarea>
-                            <button class="btn btn-primary" id="sendMessage">Send</button>
+                            <button class="btn btn-dark chat-btn" id="sendMessage">Send</button>
                         </div>
                     </div>
                     <div class="chat__typing">
@@ -74,9 +71,6 @@
             </div>
         </div>
     </div>
-
-
-
     <script src="@Url.Content("~/js/app.js")" type="text/javascript"></script>
     <script src="https://js.pusher.com/4.0/pusher.min.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -107,6 +101,7 @@
             socketId = pusher.connection.socket_id;
         });
         let currentContact = null; // Holds contact currently being chatted with
+        let selectedContact = null;
         let socketId = null;
         let currentconversationChannel = null;//pusher.subscribe('chat-' + @ViewBag.currentUser.UserID );
         let conversationChannelName = null;
@@ -142,7 +137,7 @@
             }
         }
         function displayMessage(message_obj) {
-            console.log(message_obj);
+
             const msg_id = message_obj.MessageID||message_obj.messageID;
             const msg_body = message_obj.Message||message_obj.message;
             let template = $(newMessageTpl).html();
@@ -150,7 +145,7 @@
             template = template.replace("{{body}}", msg_body);
             template = $(template);
             if ( message_obj.UserSenderID == @ViewBag.currentUser.UserID||message_obj.userSenderID == @ViewBag.currentUser.UserID ) {
-                template.find('.__chat__').addClass('receive__chat');                
+                template.find('.__chat__').addClass('receive__chat');
             } else {
                 template.find('.__chat__').addClass('from__chat');
             }
@@ -163,7 +158,7 @@
         function getChat( contact_id ) {
             $.get("/contact/conversations/" + contact_id )
                 .done(function (resp) {
-                    
+
                     let chat_data = new Array(resp.data.length);
                     chat_data.fill(0);
                     for (let i = 0; i < resp.data.length; i++) {
@@ -174,26 +169,28 @@
                 loadChat( chat_data );
                 });
         }
-       
-       
+
         //load chat data into view
-        function loadChat( chat_data ) {
+        function loadChat(chat_data) {
+            $('.chat__main').empty();
             chat_data.forEach(function (data) {
-                
+
                 displayMessage(data);
             });
 
             $('.chat__body').show();
             $('.__no__chat__').hide();
+            $('.panel-body').css('max-height','87%')
         }
         // select contact to chat with
         $('.user__item').click( function(e) {
             e.preventDefault();
+
             currentContact = {
                 id: $(this).data('contact-id'),
-                name: $(this).data('contact-name'),
+                
             };
-           
+            console.log(currentContact);
             if ( conversationChannelName ) {
                 pusher.unsubscribe( conversationChannelName );
             }
@@ -220,7 +217,8 @@
         }, 1000);
         $('#msg_box').on('keyup',isTypingCallback);
         ///////////////////Sending Messages/////////////////////
-        $('#sendMessage').click( function() {
+        $('#sendMessage').click(function () {
+            if ($('#msg_box').val() === "") { return;}
             $.post("/send_message", {
                 Message: $('#msg_box').val(),
                 contact: currentContact.id,
@@ -228,9 +226,6 @@
             }).done(function (data) {
                 let obj = {};
                 obj = data;
-                console.log(obj);
-                console.log(data);
-                console.log($('#msg_box'));
                 displayMessage(data);
                 $('#msg_box').val('');
             });
@@ -259,7 +254,34 @@
                 $('#msg-' + msg.id).find('.delivery-status').show();
             });
         }
+
+        if (@ViewBag.selectedUser.UserID!= 0) {
+            function onload() {
+
+
+                currentContact = {
+                    id: @ViewBag.selectedUser.UserID,
+                  
+                   
+                };
+
+                if (conversationChannelName) {
+                    pusher.unsubscribe(conversationChannelName);
+                }
+                conversationChannelName = getConvoChannel((@ViewBag.currentUser.UserID * 1), (currentContact.id * 1));
+                currentconversationChannel = pusher.subscribe(conversationChannelName);
+                bind_client_events();
+
+                $('#contacts').find('li').removeClass('active');
+                $('#contacts .contact-' + currentContact.id).find('li').addClass('active');
+                getChat(currentContact.id);
+
+            };
+        }
     </script>
+
+
+
 </body>
 </html>
 

@@ -24,23 +24,45 @@ namespace Project.Controllers
         // GET: PairsModels
         public async Task<IActionResult> Index()
         {
-            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika
-            var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
-            var pairsList = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika 
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika       
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var query1 = from tenant in _context.Tenants
+                         where tenant.UserID == int.Parse(id)
+                         select tenant;
+            if (query1.FirstOrDefault() == null)
+            {
+                return RedirectToAction("Create", "TenantModels");
+            }
+            var tenantLog = _context.Tenants
+                .Where(m => m.UserID == int.Parse(id))
+                .Include(m => m.User)
+                .Select(m => m.TenantID).ToList();//tenantid zalegowanego użytkownika
+
+            var pairsList = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika 
             var users = _context.User.Where(m => m.UserID != int.Parse(id)).ToList();
-            var count = pairsList.Count;
+
             if (pairsList.Count < users.Count)
             {
                 Pair(tenantLog[0], 0);
                 Pair(0, tenantLog[0]);
             }
-
+            updateCompatibility();
             await _context.SaveChangesAsync();
-            var pairsList2 = _context.Pairs.Where(m => m.TenantID_1 == tenantLog[0]).ToList();//lista dopasowań dla zalogowanego użytkownika
+            var pairsList2 = _context.Pairs
+                .Where(m => m.TenantID_1 == tenantLog[0])
+                .Include(m => m.Tenant_1)
+                .Include(m => m.Tenant_2)
+                .ToList();//lista dopasowań dla zalogowanego użytkownika
             List<PairsModel> pairs = new List<PairsModel>();
             foreach (var item in pairsList2)
             {
-
                 pairs.Add(item);
             }
             for (int i = 0; i < pairsList2.Count(); i++)
@@ -59,72 +81,122 @@ namespace Project.Controllers
             return View(pairs);
         }
 
-        public void Pair(int Tenant1, int Tenant2)
+        public void updateCompatibility()
+        {
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika     
+            var tenantLog = _context.Tenants.Where(m => m.UserID == int.Parse(id)).ToList();
+            var pairsList = _context.Pairs.ToList();
+
+            foreach (var item in pairsList)
+            {
+                if (item.TenantID_1 == tenantLog[0].TenantID)
+                {
+                    var tenant = _context.Tenants.Where(m => m.TenantID == item.TenantID_2).ToList();
+                    var cal = calculateCompatibility(tenant[0]);
+                    item.PairCompatibility = cal;
+                }
+
+                else if (item.TenantID_2 == tenantLog[0].TenantID)
+                {
+                    var tenant = _context.Tenants.Where(m => m.TenantID == item.TenantID_1).ToList();
+                    item.PairCompatibility = calculateCompatibility(tenant[0]);
+                }
+                _context.Update(item);
+            }
+
+        }
+
+        public float calculateCompatibility(TenantModel item)
         {
             var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika
             var tenantList = _context.Tenants.Where(m => m.UserID != int.Parse(id)).ToList();
             var tp = _context.Tenants.Where(m => m.UserID == int.Parse(id)).Select(m => new { m.Age, m.Status, m.Gender, m.IsSmoking, m.IsVege }).ToList();
             var a = tp.Count;
+
+
+
+            float compatibility = 200;
+
+
+            var gep = tp[0].Gender;
+            var ged = item.Gender;
+            if (gep.Equals(ged))
+            {
+                compatibility += 30;
+            }
+            else
+            {
+                compatibility -= 30;
+            }
+
+            if (tp[0].IsSmoking == item.IsSmoking)
+            {
+                compatibility += 50;
+            }
+            else
+            {
+                compatibility -= 50;
+            }
+
+            if (tp[0].IsVege == item.IsVege)
+            {
+                compatibility += 50;
+            }
+            else
+            {
+                compatibility -= 50;
+            }
+            var stp = tp[0].Status;
+            var std = item.Status;
+            compatibility += calculateStatus(stp, std);
+
+
+            var agp = tp[0].Age;
+            var agd = item.Age;
+            compatibility += calculateAge(agp, agd);
+            compatibility /= 4;
+
+
+            return compatibility;
+        }
+
+        public void Pair(int Tenant1, int Tenant2)
+        {
+            var id = this.HttpContext.Session.GetString("UserID");//id zalogowanego użytkownika
+            var tenantList = _context.Tenants.Where(m => m.UserID != int.Parse(id)).ToList();
             foreach (var item in tenantList)
             {
                 PairsModel pairsModel = new PairsModel();
 
-                float compatibility = 200;
-
-
-                var gep = tp[0].Gender;
-                var ged = item.Gender;
-                if (gep.Equals(ged))
-                {
-                    compatibility += 30;
-                }
-                else
-                {
-                    compatibility -= 30;
-                }
-
-                if (tp[0].IsSmoking == item.IsSmoking)
-                {
-                    compatibility += 50;
-                }
-                else
-                {
-                    compatibility -= 50;
-                }
-
-                if (tp[0].IsVege == item.IsVege)
-                {
-                    compatibility += 50;
-                }
-                else
-                {
-                    compatibility -= 50;
-                }
-                var stp = tp[0].Status;
-                var std = item.Status;
-                compatibility += calculateStatus(stp, std);
-
-
-                var agp = tp[0].Age;
-                var agd = item.Age;
-                compatibility += calculateAge(agp, agd);
-                compatibility /= 4;
                 if (Tenant1 == 0)
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant2).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_2 = Tenant2;
                     pairsModel.TenantID_1 = item.TenantID;
                 }
                 else
                 {
+                    var t1 = _context.Tenants.Where(m => m.TenantID == Tenant1).ToList();
+                    var t2 = _context.Tenants.Where(m => m.TenantID == item.TenantID).ToList();
+                    pairsModel.Tenant_1 = t1[0];
+                    pairsModel.Tenant_2 = t2[0];
                     pairsModel.TenantID_1 = Tenant1;
                     pairsModel.TenantID_2 = item.TenantID;
                 }
 
-                pairsModel.PairCompatibility = compatibility;
+                pairsModel.PairCompatibility = calculateCompatibility(item);
 
                 _context.Add(pairsModel);
             }
         }
+
+
+
+
+
 
 
         public async Task<IActionResult> CreatePairs(PairsModel pairsModel)
@@ -138,7 +210,7 @@ namespace Project.Controllers
 
 
 
-      
+
 
         public int calculateStatus(string stp, string std)
         {

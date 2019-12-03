@@ -15,7 +15,7 @@ namespace Project.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -70,7 +70,7 @@ namespace Project.Migrations
 
                     b.Property<int>("RoomsCount");
 
-                    b.Property<double>("Surface");
+                    b.Property<int>("Surface");
 
                     b.HasKey("FlatID");
 
@@ -138,7 +138,7 @@ namespace Project.Migrations
 
                     b.Property<int>("OwnerID");
 
-                    b.Property<int?>("UserID");
+                    b.Property<int>("UserID");
 
                     b.HasKey("OpinionID");
 
@@ -322,7 +322,8 @@ namespace Project.Migrations
 
                     b.HasOne("Project.Models.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Project.Models.OwnerModel", b =>
