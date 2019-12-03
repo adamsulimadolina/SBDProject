@@ -27,7 +27,9 @@ namespace Project.Models
         public int TenantID_1 { get; set; }
         [ForeignKey("TenantID_2")]
         public int TenantID_2 { get; set; }
+        
         public virtual TenantModel Tenant_1{ get; set; }
+        
         public virtual TenantModel Tenant_2{ get; set; }
 
 

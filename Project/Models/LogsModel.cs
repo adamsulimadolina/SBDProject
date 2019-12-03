@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Project.Models
 {
@@ -23,10 +24,12 @@ namespace Project.Models
         public int LogID { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [DisplayName("Data")]
         public Nullable<System.DateTime> MessageDate { get; set; }
 
         [MaxLength(50)]
+        [DisplayName("Wiadomość")]
         public string Log { get; set; }
 
         [ForeignKey("UserID")]

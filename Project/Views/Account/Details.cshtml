@@ -1,0 +1,88 @@
+﻿@model UserModel
+
+
+@{
+    ViewData["Title"] = "Details";
+    var owner = (OwnerModel)ViewData["Owner"];
+    var tenant = (TenantModel)ViewData["Tenant"];
+}
+
+
+
+<div class="row justify-content-around px-2 my-5 word-wrapper">  
+    <div class="col-md-5 col-sm-9 box-shadow p-3 my-4">
+        <h2>Dane konta</h2>
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Login)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Login)
+            </dd>
+
+        </dl>
+        <div class="text-center">
+            <a asp-controller="Account" asp-action="ChangePassword" asp-route-id="@Model.UserID" class="btn btn-outline-primary ">Zmień hasło</a> 
+            <a asp-controller="Account" asp-action="Delete" asp-route-id="@Model.UserID" class="btn btn-outline-primary ">Usuń konto</a>
+        </div>
+    </div>
+    <div class="col-md-5 col-sm-9 justify-content-center box-shadow p-3 my-4">
+        <h2>Dane właściciela</h2>
+        @if (!ViewBag.OwnerNull)
+        {
+            <dl class="row">
+
+                <dt class="col-sm-4">
+                    Imię właściciela
+                </dt>
+                <dd class="col-sm-8">
+                    @owner.Name
+                </dd>
+                <dt class="col-sm-4">
+                    Nazwisko właściciela
+                </dt>
+                <dd class="col-sm-8">
+                    @owner.Surname
+                </dd>
+            </dl>
+            <div class="text-center">
+                <a asp-controller="OwnerModels" asp-action="Edit" asp-route-id="@owner.OwnerID" class="btn btn-outline-primary">Edytuj dane właściciela</a>
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <a asp-controller="OwnerModels" asp-action="Create" class="btn btn-outline-primary">Stwórz profil właściciela</a>
+            </div>
+        }
+
+    </div>
+    <div class="col-md-5 col-sm-9 box-shadow p-3 my-4 ">
+        <h2>Dane lokatora</h2>
+        @if (!ViewBag.TenantNull)
+        {
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Imię najemcy
+                </dt>
+                <dd class="col-sm-8">
+                    @tenant.Name
+                </dd>
+                <dt class="col-sm-4">
+                    Nazwisko najemcy
+                </dt>
+                <dd class="col-sm-8">
+                    @tenant.Surname
+                </dd>
+            </dl>
+            <div class="text-center">
+                <a asp-controller="TenantModels" asp-action="Edit" asp-route-id="@tenant.TenantID" class="btn btn-outline-primary mx-auto">Edytuj dane najemcy</a>
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <a asp-controller="TenantModels" asp-action="Create" class="btn btn-outline-primary mx-auto">Stwórz profil lokatora</a>
+            </div>
+        }
+    </div>

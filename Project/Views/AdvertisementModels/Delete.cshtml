@@ -1,0 +1,40 @@
+﻿@model Project.Models.AdvertisementModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+    <div class="row col-md-6 col-sm-10 mx-auto py-5">
+        <div class="row text-center my-2">
+            <h2>Czy jesteś pewien że chcesz usunąć ogłoszenie?</h2>
+        </div>
+        <div class="row justify-content-center text-center">
+            <dl class="row">
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.AdvertisementType)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.AdvertisementType)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Owner)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Owner.OwnerID)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Flat)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Flat.FlatID)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="AdvertisementID" />
+                <input type="submit" value="DELETE" class="btn btn-danger font-weight-bold" /> |
+                <a asp-action="Index">Powrót do listy</a>
+            </form>
+        </div>
+    </div>

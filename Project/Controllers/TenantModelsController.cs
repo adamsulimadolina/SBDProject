@@ -29,9 +29,10 @@ namespace SBDProject.Controllers
         // GET: TenantModels
         public async Task<IActionResult> Index()
         {
+           
             // var applicationDbContext = _context.TenantModel.Include(t => t.User);
             var id = this.HttpContext.Session.GetString("UserID");
-
+           
             if (id != null)
             {
                 ViewBag.AbletoModify = int.Parse(id);
@@ -76,6 +77,16 @@ namespace SBDProject.Controllers
         // GET: TenantModels/Create
         public IActionResult Create()
         {
+            var query1 = from tenant in _context.Tenants                         
+                         select tenant;
+            var tenants = query1.ToList();
+            foreach(var tenant in tenants)
+            {
+                if(tenant.UserID== int.Parse(this.HttpContext.Session.GetString("UserID")))
+                {                                      
+                    return RedirectToAction("Index","PairsModels");
+                }
+            }
             if (TempData["ModelState"] != null)
             {
                 ModelState.AddModelError(string.Empty, (string)TempData["ModelState"]);
@@ -93,16 +104,18 @@ namespace SBDProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TenantID,Name,Surname,Age,IsSmoking,IsVege,Status,Gender,UserID")] TenantModel tenantModel)
         {
+            
             if (ModelState.IsValid)
             {
 
                 var id = this.HttpContext.Session.GetString("UserID");
+                var user = _context.User.Where(m => m.UserID == int.Parse(id)).ToList();
                 tenantModel.UserID = int.Parse(id);
+                tenantModel.User = user[0];
                 _context.Add(tenantModel);
                 await _context.SaveChangesAsync();
                 ModelState.Clear();
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "PairsModels");
             }
             TempData["ModelState"] = "You must fill in all of the fields";
             //ViewData["UserID"] = new SelectList(_context.Set<UserModel>(), "UserID", "UserID", tenantModel.UserID);
@@ -140,6 +153,7 @@ namespace SBDProject.Controllers
                 return NotFound();
             }
 
+            tenantModel.User = _context.User.Find(tenantModel.UserID);
             if (ModelState.IsValid)
             {
                 try
@@ -159,7 +173,7 @@ namespace SBDProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", new { id = tenantModel.TenantID });
+                return RedirectToAction("Details", "Account");
             }
             //   ViewData["UserID"] = new SelectList(_context.Set<UserModel>(), "UserID", "UserID", tenantModel.UserID);
             return View(tenantModel);
@@ -188,7 +202,18 @@ namespace SBDProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tenantModel = await _context.Tenants.FindAsync(id);
+            TenantModel tenantModel = _context.Tenants.Where(m => m.TenantID == id).SingleOrDefault();
+            var pairs = _context.Pairs.Where(m => m.TenantID_1 == id).ToList();
+            var pairs2 = _context.Pairs.Where(m => m.TenantID_2 == id).ToList();
+            foreach(var pr in pairs)
+            {
+                
+                _context.Pairs.Remove(pr);
+            }
+            foreach(var pr in pairs2)
+            {
+                _context.Pairs.Remove(pr);
+            }
             _context.Tenants.Remove(tenantModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -196,12 +221,7 @@ namespace SBDProject.Controllers
 
         public async Task<IActionResult> Show()
         {
-
-
             return RedirectToAction("Index", "PairsModels");
-
-
-
         }
 
         private bool TenantModelExists(int id)
