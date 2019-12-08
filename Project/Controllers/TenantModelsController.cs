@@ -17,8 +17,8 @@ namespace SBDProject.Controllers
     public class TenantModelsController : Controller
     {
         private readonly ProjectContext _context;
-        private readonly List<string> typeofStatus = new List<string>(new string[] { "Student", "Employee", " Pensioner", "Unemployed" });
-        private readonly List<string> typeofGender = new List<string>(new string[] { "Female", "Male" });
+        private readonly List<string> typeofStatus = new List<string>(new string[] { "Student", "Pracujący", " Emeryta", "Niepracujący" });
+        private readonly List<string> typeofGender = new List<string>(new string[] { "Kobieta", "Mężczyzna" });
 
 
         public TenantModelsController(ProjectContext context)

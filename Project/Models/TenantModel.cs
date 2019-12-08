@@ -39,9 +39,10 @@ namespace Project.Models
         public bool IsVege { get; set; }
         [DisplayName("Status")]
         public string Status { get; set; }
+
+        [DisplayName("Płeć")]
         public string Gender { get; set; }
         [ForeignKey("UserID")]
-        [DisplayName("Płeć")]
         public int UserID { get; set; }
       
         public virtual UserModel User { get; set; }

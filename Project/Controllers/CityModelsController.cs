@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +23,20 @@ namespace Project.Controllers
         // GET: CityModels
         public async Task<IActionResult> Index()
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+ 
             return View(await _context.Citys.ToListAsync());
         }
 
         // GET: CityModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +55,10 @@ namespace Project.Controllers
         // GET: CityModels/Create
         public IActionResult Create()
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             return View();
         }
 
@@ -56,6 +69,10 @@ namespace Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CityID,CityName")] CityModel cityModel)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid)
             {
                 _context.Add(cityModel);
@@ -68,6 +85,10 @@ namespace Project.Controllers
         // GET: CityModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             if (id == null)
             {
                 return NotFound();
@@ -88,6 +109,10 @@ namespace Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CityID,CityName")] CityModel cityModel)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             if (id != cityModel.CityID)
             {
                 return NotFound();
@@ -119,6 +144,10 @@ namespace Project.Controllers
         // GET: CityModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             if (id == null)
             {
                 return NotFound();
@@ -139,6 +168,10 @@ namespace Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
+            if (!Methods.checkAdmin(int.Parse(usr_id), _context)) return RedirectToAction("Index", "Home");
+
             var cityModel = await _context.Citys.FindAsync(id);
             _context.Citys.Remove(cityModel);
             await _context.SaveChangesAsync();

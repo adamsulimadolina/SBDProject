@@ -21,14 +21,14 @@ namespace Project.Models
     {       
         [Key]
         public int UserID { get; set; }
-        [Required(ErrorMessage = "Login is required. ")]
+        [Required(ErrorMessage = "Login jest wymagany. ")]
         [DisplayName("Nazwa użytkownika")]
         public string Login { get; set; }
-        [Required(ErrorMessage = "Password is required.")]
+        [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]
         [DisplayName("Hasło")]
         public string Password { get; set; }
-        [Compare("Password", ErrorMessage = "Please confirm your password.")]
+        [Compare("Password", ErrorMessage = "Hasła różnią się.")]
         [DataType(DataType.Password)]
         [DisplayName("Powtórz hasło")]
         public string VerifyPassword { get; set; }

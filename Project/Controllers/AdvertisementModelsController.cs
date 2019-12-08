@@ -69,6 +69,14 @@ namespace Project.Controllers
         // GET: AdvertisementModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+
+            if (usr_id == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -117,7 +125,6 @@ namespace Project.Controllers
             }
             else
             {
-
                 return RedirectToAction("Login", "Account");
             }
             
@@ -259,6 +266,12 @@ namespace Project.Controllers
                 .Include(a => a.Flat.City)
                 .Include(a => a.Owner)
                 .FirstOrDefaultAsync(m => m.AdvertisementID == id);
+
+            var owner_id = advertisementModel.OwnerID;
+
+            var user_id = int.Parse(this.HttpContext.Session.GetString("UserID"));
+
+            if (!Methods.checkOwner(owner_id, _context, user_id) && !Methods.checkAdmin(user_id, _context)) return RedirectToAction("Index");
             if (advertisementModel == null)
             {
                 return NotFound();

@@ -218,16 +218,16 @@ namespace Project.Controllers
             {
                 return 35;
             }
-            else if (stp.Equals("Unemployed") || std.Equals("Unemployed"))
+            else if (stp.Equals("Niepracujący") || std.Equals("Niepracujący"))
             {
                 return -20;
 
             }
-            else if ((stp.Equals("Pensioner") || std.Equals("Pensioner")))
+            else if ((stp.Equals("Emeryta") || std.Equals("Emeryta")))
             {
                 return -35;
             }
-            else if ((stp.Equals("Employee") || std.Equals("Employee")))
+            else if ((stp.Equals("Pracujący") || std.Equals("Pracujący")))
             {
                 return -25;
             }

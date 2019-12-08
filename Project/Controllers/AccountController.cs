@@ -48,7 +48,7 @@ namespace Project.Controllers
             {
                 if(elem.Login.Equals(user.Login))
                 {
-                    ViewBag.Message = "Podany użytkownik już istnieje!";
+                    ModelState.AddModelError("UserExistsError", "Użytkownik o podanym loginie już istnieje.");
                     return View();
                 }
             }
@@ -60,7 +60,7 @@ namespace Project.Controllers
                 register_log.UserR = user;
                 using (ProjectContext db = new ProjectContext(_optionsBuilder.Options))
                 {
-                    db.User.Add(user);//db.Users.Add(user);
+                    db.User.Add(user);
                     db.SaveChanges();
                 }
                 ModelState.Clear();
@@ -104,7 +104,7 @@ namespace Project.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Login lub hasło są niepoprawne.");
+                    ModelState.AddModelError("UserLoginError", "Login lub hasło są niepoprawne.");
                     return View(user);
                 }
                 return RedirectToAction("Index", "Home");
@@ -156,9 +156,19 @@ namespace Project.Controllers
             var tenant = await _context.Tenants
                 .Where(m => m.UserID.Equals(user.UserID))
                 .FirstOrDefaultAsync();
+            ViewBag.OwnerNull = false;
+            ViewBag.TenantNull = false;
+            if (owner == null)
+            {
+                owner = new OwnerModel();
+                ViewBag.OwnerNull = true;
+            }
 
-            if (owner == null) owner = new OwnerModel();
-            if (tenant == null) tenant = new TenantModel();
+            if (tenant == null)
+            {
+                tenant = new TenantModel();
+                ViewBag.TenantNull = true;
+            }
             ViewData["Owner"] = owner;
             ViewData["Tenant"] = tenant;
             return View(user);
@@ -166,6 +176,16 @@ namespace Project.Controllers
 
         public IActionResult ChangePassword(int? id)
         {
+            if (this.HttpContext.Session.Get("UserID") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            if(int.Parse(this.HttpContext.Session.GetString("UserID"))!=id && Methods.checkAdmin((int)id, _context))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -179,13 +199,14 @@ namespace Project.Controllers
         public async Task<IActionResult> ChangePassword(int id, [Bind(Prefix = "Item1")] string old_password, 
             [Bind(Prefix = "Item2")] string new_password, [Bind(Prefix = "Item3")] string new_password_repeat)
         {
+            
             var user = await _context.User
                 .Where(m => m.UserID.Equals(id))
                 .FirstOrDefaultAsync();
 
             if(!user.Password.Equals(old_password))
             {
-                ViewBag.OldPass = "Obecne hasło jest niepoprawne.";
+                ViewBag.OldPass = "Wprowadź swoje obecne hasło.";
                 return View();
             }
             if(new_password != new_password_repeat)
@@ -205,6 +226,16 @@ namespace Project.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
+            if (this.HttpContext.Session.Get("UserID") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            if (int.Parse(this.HttpContext.Session.GetString("UserID")) != id && Methods.checkAdmin((int) id, _context))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
