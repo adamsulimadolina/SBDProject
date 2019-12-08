@@ -23,14 +23,20 @@ namespace Project.Models
         public int TenantID { get; set; }
         [MaxLength(20)]
         [DisplayName("Imię")]
+
+        [Required(ErrorMessage = "Imię jest wmagane. ")]
         public string Name { get; set; }
         [MaxLength(30)]
         [DisplayName("Nazwisko")]
+
+        [Required(ErrorMessage = "Nazwisko jest wymagane. ")]
         public string Surname { get; set; }
 
 
         [Range(18, 90)]
         [DisplayName("Wiek")]
+
+        [Required(ErrorMessage = "Wiek jest wymagany. ")]
         public int Age { get; set; }
 
         [DisplayName("Palisz?")]
