@@ -21,6 +21,8 @@ namespace Project.Models
         [Key]
         public int OpinionID { get; set; }
         [MaxLength(250)]
+
+        [Required(ErrorMessage = "To pole jest wymagane. ")]
         public string Opinion { get; set; }
 
         [ForeignKey("OwnerID")]
