@@ -33,10 +33,11 @@ namespace Project.Models
         [StringLength(20)]
         [DisplayName("Typ kuchni")]
         public string KitchenType { get; set; }
-        
+
         [ForeignKey("CityID")]
         public int CityID { get; set; }
 
+        [DisplayName("Miasto")]
         public virtual CityModel City { get; set; }
 
         public static FlatModel setCity(string city, FlatModel flatModel, List<CityModel> cityList)

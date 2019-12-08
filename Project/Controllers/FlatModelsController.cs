@@ -52,6 +52,8 @@ namespace Project.Controllers
         //// GET: FlatModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var usr_id = this.HttpContext.Session.GetString("UserID");
+            if (usr_id == null) return RedirectToAction("Login", "Account");
             if (id == null)
             {
                 return NotFound();
